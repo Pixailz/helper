@@ -4,3 +4,6 @@ include/
 lib/
 lib64
 pyvenv.cfg
+
+# test project
+ft_libft/
