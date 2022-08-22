@@ -4,52 +4,71 @@ from pprint import pprint
 import re
 import os
 
+# class SrcMakefile():
+# 	def __init__(self):
+# 		pass
+
+# class Proto():
+# 	def __init__(self, src_files, header):
+# 		self.c_files = src_files
+# 		self.header = header
+
 class RegexFinder():
 	def __init__(self):
 		self.compile_all_regex()
 
 	def compile_all_regex(self):
 		options = {
-			"flags": "re.MULTILINE | re.ASCII"
+			"flags": re.MULTILINE | re.ASCII
 		}
-		self.re_function_infile = re.compile(r'^\w+\s+\w+\(.*\)$', **options)
+		self.re_function_infile = \
+			re.compile(r'(^\w+\s+\*?\w+\s+\*?\w+\(.*\)$|^\w+\s+\*?\w+\(.*\)$)', **options)
 		self.re_c_files = re.compile(r'.*\.c', re.ASCII)
 		self.re_h_files = re.compile(r'.*\.h', re.ASCII)
-		self.re_get_header = re.compile(r'#include "', **options)
-
-class SrcMakefile():
-	def __init__(self):
-		pass
-
-class Proto():
-	def __init__(self, src_files, header):
-		self.c_files = src_files
-		self.header = header
+		self.re_get_header = re.compile(r'^#include "(.*)"', **options)
 
 class ft_helper():
-	def __init__(self, src_folder, makefile, header):
+	def __init__(self, makefile, header, src_folder=None):
 		self.cwd = os.getcwd()
 		self.regex = RegexFinder()
-		self.src_folder = src_folder
+		if src_folder == None:
+			self.src_folder = self.cwd
+		else:
+			self.src_folder = src_folder
 		self.makefile = makefile
-		self.header = header
+		self.header = list(header)
 		self.get_files()
-		self.Proto = Proto(self.c_files, self.header)
+		self.number_of_function = 0
+		#self.get_header_all_files()
+		self.get_function_all_files()
+		self.debug_print_file()
 
 	def get_files(self):
 		files = list()
 		for (dirpath, dirname, filename) in os.walk(self.src_folder):
 			for file in filename:
 				files.append(os.path.join(dirpath, file))
-		self.c_files = [ f for f in files if self.regex.re_c_files.findall(f) ]
-		self.h_files = [ f for f in files if self.regex.re_h_files.findall(f) ]
+		self.c_files = { f: list() \
+							for f in files if self.regex.re_c_files.findall(f) }
+
+	def get_function_all_files(self):
+		for filename, function in self.c_files.items():
+			self.get_function(filename, function)
+
+	def get_function(self, filename, function):
+		file_str = str()
+		with open(filename, "r") as f:
+			file_str = f.read()
+		function.extend(self.regex.re_get_header.findall(file_str))
+		function.extend(self.regex.re_function_infile.findall(file_str))
+		self.number_of_function += len(function)
 
 	def debug_print_file(self):
-		pprint(self.c_files)
-		pprint(self.h_files)
+		print(self.c_files)
+		print(self.number_of_function)
+		print(len(self.c_files))
 
 config = {
-	"src_folder": "philo",
 	"makefile": "philo/Makefile",
 	"header": "philo/philosophers.h"
 }
