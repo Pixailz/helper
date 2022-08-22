@@ -28,28 +28,28 @@ class RegexFinder():
 		self.re_get_header = re.compile(r'^#include "(.*)"', **options)
 
 class ft_helper():
-	def __init__(self, makefile, header, src_folder=None):
+	def __init__(self, makefile, makefile_var, header, src_folder=None):
 		self.cwd = os.getcwd()
 		self.regex = RegexFinder()
+		self.makefile = makefile
+		self.makefile_var = makefile_var
+		self.header = list(header)
 		if src_folder == None:
 			self.src_folder = self.cwd
 		else:
 			self.src_folder = src_folder
-		self.makefile = makefile
-		self.header = list(header)
 		self.get_files()
-		self.number_of_function = 0
-		#self.get_header_all_files()
 		self.get_function_all_files()
-		self.debug_print_file()
+		self.debug_formated_data()
+		self.debug_raw_data()
 
 	def get_files(self):
-		files = list()
+		self.files = list()
 		for (dirpath, dirname, filename) in os.walk(self.src_folder):
 			for file in filename:
-				files.append(os.path.join(dirpath, file))
+				self.files.append(os.path.join(dirpath, file))
 		self.c_files = { f: list() \
-							for f in files if self.regex.re_c_files.findall(f) }
+					for f in self.files if self.regex.re_c_files.findall(f) }
 
 	def get_function_all_files(self):
 		for filename, function in self.c_files.items():
@@ -57,20 +57,34 @@ class ft_helper():
 
 	def get_function(self, filename, function):
 		file_str = str()
-		with open(filename, "r") as f:
+		with open(filename, 'r') as f:
 			file_str = f.read()
-		function.extend(self.regex.re_get_header.findall(file_str))
-		function.extend(self.regex.re_function_infile.findall(file_str))
-		self.number_of_function += len(function)
+		header = self.regex.re_get_header.findall(file_str)
+		if len(header) == 0:
+			function.append(None)
+		else:
+			function.extend(header)
+		function.append(self.regex.re_function_infile.findall(file_str))
 
-	def debug_print_file(self):
+	def debug_formated_data(self):
+		for file, options in self.c_files.items():
+			print(file)
+			if options[0] == None:
+				print(' ' * 4 + 'None')
+			else:
+				print(' ' * 4 + options[0])
+			for function in options[1]:
+				print(' ' * 4 + function.expandtabs(16))
+			print('\n')
+
+	def debug_raw_data(self):
 		print(self.c_files)
-		print(self.number_of_function)
-		print(len(self.c_files))
 
 config = {
-	"makefile": "philo/Makefile",
-	"header": "philo/philosophers.h"
+	"makefile":		"philo/Makefile",
+	"makefile_var":	"SRC_C",
+	"header":		"philo/philosophers.h",
+	"src_folder":	"philo"
 }
 
 helper = ft_helper(**config)
