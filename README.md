@@ -11,7 +11,9 @@ Helper to make life easier, and effiency btw
 2. get_header_all_files()
 
 > 40 function in philo folder
+
 > 17 c files
+
 > better view of data https://jsonformatter.curiousconcept.com
 
 ## requirements.txt
