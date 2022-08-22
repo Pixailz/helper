@@ -1,4 +1,57 @@
 #!/usr/bin/env python3
 
-def get_function_infile(file_name):
-	pass
+from pprint import pprint
+import re
+import os
+
+class RegexFinder():
+	def __init__(self):
+		self.compile_all_regex()
+
+	def compile_all_regex(self):
+		options = {
+			"flags": "re.MULTILINE | re.ASCII"
+		}
+		self.re_function_infile = re.compile(r'^\w+\s+\w+\(.*\)$', **options)
+		self.re_c_files = re.compile(r'.*\.c', re.ASCII)
+		self.re_h_files = re.compile(r'.*\.h', re.ASCII)
+		self.re_get_header = re.compile(r'#include "', **options)
+
+class SrcMakefile():
+	def __init__(self):
+		pass
+
+class Proto():
+	def __init__(self, src_files, header):
+		self.c_files = src_files
+		self.header = header
+
+class ft_helper():
+	def __init__(self, src_folder, makefile, header):
+		self.cwd = os.getcwd()
+		self.regex = RegexFinder()
+		self.src_folder = src_folder
+		self.makefile = makefile
+		self.header = header
+		self.get_files()
+		self.Proto = Proto(self.c_files, self.header)
+
+	def get_files(self):
+		files = list()
+		for (dirpath, dirname, filename) in os.walk(self.src_folder):
+			for file in filename:
+				files.append(os.path.join(dirpath, file))
+		self.c_files = [ f for f in files if self.regex.re_c_files.findall(f) ]
+		self.h_files = [ f for f in files if self.regex.re_h_files.findall(f) ]
+
+	def debug_print_file(self):
+		pprint(self.c_files)
+		pprint(self.h_files)
+
+config = {
+	"src_folder": "philo",
+	"makefile": "philo/Makefile",
+	"header": "philo/philosophers.h"
+}
+
+helper = ft_helper(**config)
