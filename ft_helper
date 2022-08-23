@@ -45,7 +45,7 @@ class RegexFinder():
 		)
 
 class	ft_helper():
-	def	__init__(self, makefile, makefile_var, header, src_folder=None):
+	def	__init__(self, makefile, makefile_var, header, src_folder):
 		self.cwd = os.getcwd()
 		self.makefile = makefile
 		self.makefile_var = makefile_var
@@ -56,15 +56,12 @@ class	ft_helper():
 			"/* ##### */\n"
 		self.header_end = \
 			"/* ########################################################################## */"
-		if src_folder == None:
-			self.src_folder = self.cwd
-		else:
-			self.src_folder = os.path.join(self.cwd, src_folder)
+		self.src_folder = os.path.join(self.cwd, src_folder)
 		self.regex = RegexFinder(makefile_var)
 		self.get_files()
 		self.get_function_all_files()
-		self.replace_src_makefile()
 		self.replace_proto_header()
+		self.replace_src_makefile()
 
 	def	get_files(self):
 		self.files = list()
@@ -72,13 +69,9 @@ class	ft_helper():
 			for file in filename:
 				self.files.append(os.path.join(dirpath, file))
 		self.files = sorted(self.files)
-		self.c_files = { f: list() \
+		self.c_files = { f: list()
 			for f in self.files if self.regex.re_c_files.findall(f)
 		}
-
-	def get_function_all_files(self):
-		for filename, function in self.c_files.items():
-			self.get_function(filename, function)
 
 	def	get_function(self, filename, function):
 		file_str = str()
@@ -89,21 +82,12 @@ class	ft_helper():
 		# 	function.append(None)
 		# else:
 		# 	function.extend(header)
-		function.extend(self.regex.re_function_infile.findall(file_str))
+		function_list = sorted(self.regex.re_function_infile.findall(file_str))
+		function.extend(function_list)
 
-	def	debug_formated_data(self):
-		for file, options in self.c_files.items():
-			print(file)
-			if options[0] == None:
-				print(' ' * 4 + 'None')
-			else:
-				print(' ' * 4 + options[0])
-			for function in options[1]:
-				print(' ' * 4 + function.expandtabs(16))
-			print('\n')
-
-	def	debug_raw_data(self):
-		print(self.c_files)
+	def get_function_all_files(self):
+		for filename, function in self.c_files.items():
+			self.get_function(filename, function)
 
 	def	get_src_makefile_multiple(self, file_str):
 		src_makefile_str = str()
@@ -113,7 +97,7 @@ class	ft_helper():
 		last_src_path = list(self.c_files.keys())[-1]
 		src_makefile_str += 'SRC_C' + str('\t' * nb_tab) + ":= " + \
 			first_src_path.replace(self.src_folder + '/', '') + " \\\n"
-		c_files = self.c_files
+		c_files = dict(self.c_files)
 		del(c_files[first_src_path])
 		for file_path in c_files:
 			if file_path != last_src_path:
@@ -136,7 +120,8 @@ class	ft_helper():
 	def	replace_src_makefile(self):
 		with open(self.makefile, 'r') as f:
 			file_str = f.read()
-		self.have_backslash = self.regex.re_get_first_src_makefile.findall(file_str)[0]
+		self.have_backslash = \
+					self.regex.re_get_first_src_makefile.findall(file_str)[0]
 		if len(self.c_files) == 1:
 			to_replace = self.get_src_makefile_one(file_str)
 		else:
@@ -204,11 +189,70 @@ class	ft_helper():
 		with open(self.header, 'w') as f:
 			f.write(file_str_replace)
 
-config = {
-	"makefile":		"philo/Makefile2",
-	"makefile_var":	"SRC_C",
-	"header":		"philo/philosophers.h",
-	"src_folder":	"philo"
-}
+	def	debug_formated_data(self):
+		for file, options in self.c_files.items():
+			print(file)
+			for function in options:
+				print(' ' * 4 + function.expandtabs(12))
+			print('\n')
 
-helper = ft_helper(**config)
+	def	debug_raw_data(self):
+		print(self.c_files)
+
+if __name__ == "__main__":
+	config = {
+		"makefile":		"Makefile",
+		"makefile_var":	"SRC_CHK",
+		"header":		"include/libft_check.h",
+		"src_folder":	"src/check"
+	}
+	ft_libft_check = ft_helper(**config)
+	exit()
+
+	config = {
+		"makefile":		"Makefile",
+		"makefile_var":	"SRC_INP",
+		"header":		"include/libft_input.h",
+		"src_folder":	"src/input"
+	}
+	ft_libft_input = ft_helper(**config)
+
+	config = {
+		"makefile":		"Makefile",
+		"makefile_var":	"SRC_INT",
+		"header":		"include/libft_integer.h",
+		"src_folder":	"src/integer"
+	}
+	ft_libft_integer = ft_helper(**config)
+
+	config = {
+		"makefile":		"Makefile",
+		"makefile_var":	"SRC_LST",
+		"header":		"include/libft_list.h",
+		"src_folder":	"src/list"
+	}
+	ft_libft_list = ft_helper(**config)
+
+	config = {
+		"makefile":		"Makefile",
+		"makefile_var":	"SRC_MEM",
+		"header":		"include/libft_memory.h",
+		"src_folder":	"src/memory"
+	}
+	ft_libft_memory = ft_helper(**config)
+
+	config = {
+		"makefile":		"Makefile",
+		"makefile_var":	"SRC_PRT",
+		"header":		"include/libft_print.h",
+		"src_folder":	"src/print"
+	}
+	ft_libft_print = ft_helper(**config)
+
+	config = {
+		"makefile":		"Makefile",
+		"makefile_var":	"SRC_STR",
+		"header":		"include/libft_string.h",
+		"src_folder":	"src/string"
+	}
+	ft_libft_string = ft_helper(**config)
