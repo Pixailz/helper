@@ -11,6 +11,7 @@ Helper to make life easier, and effiency btw
 		2. get string to replace
 		3. replace in str
 		4. rewrite file
+2. write usage
 
 ## TIPS
 
