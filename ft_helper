@@ -16,39 +16,71 @@ class Proto():
 """
 
 class RegexFinder():
-	def __init__(self, makefile_var):
-		self.compile_all_regex(makefile_var)
-
-	def compile_all_regex(self, makefile_var):
-		options = {
+	def	__init__(self, makefile_var):
+		self.options = {
 			"flags": re.MULTILINE | re.ASCII
 		}
+		self.compile_all_regex(makefile_var)
+
+	def	compile_all_regex(self, makefile_var):
 		self.re_function_infile = re.compile(
 			r'^\w+\*?\s+\*?\w+\*?\s+\*?\w+\(.*\)$|' +
 			r'^\w+\*?\s+\*?\w+?\(.*\)$',
-			**options
+			**self.options
 		)
 		self.re_c_files = re.compile(r'.*\.c', re.ASCII)
 		self.re_h_files = re.compile(r'.*\.h', re.ASCII)
 		self.re_get_header = re.compile(r'^#include "(.*)"')
 		self.re_get_first_src_makefile = re.compile(
 			r'^' + re.escape(makefile_var) + r'\s+:=.*\\?$'
-			, **options
+			, **self.options
 		)
 		self.re_get_last_src_makefile = re.compile(
 			r'^\s+\w+.*\.c$',
-			**options
+			**self.options
 		)
 		self.re_proto_type_len = re.compile(
 			r'^(\w+\*?\s+|\w+\*?\s+\*?\w+\*?\s+)\*?\w*\(.*\)$',
-			**options
+			**self.options
 		)
 
+	def	get_src_makefile(self, file_str):
+		current_line = self.re_get_first_src_makefile.findall(file_str)
+		if len(current_line) == 0:
+			print("Error finding makefile_var")
+			exit()
+		elif (current_line[0][-1] != '\\'):
+			return (current_line[0])
+		src_makefile = current_line[0]
+		current_line = re.findall(
+			re.escape(src_makefile) + r'\n(\s+\w+.*\.c \\?)$',
+			file_str,
+			**self.options
+		)
+		if len(current_line) == 0:
+			return (src_makefile)
+		while current_line[0][-1] == '\\':
+			src_makefile += '\n' + current_line[0]
+			current_line = re.findall(
+				re.escape(src_makefile) + r'\n(\s+\w+.*\.c ?\\?)$',
+				file_str,
+				**self.options
+			)
+		src_makefile += '\n' + current_line[0]
+		return (src_makefile)
+
+	def	get_file_path(self, file_path, depth):
+		return (re.findall(r'/(' + (r'\w+/' * (depth - 1)) + r'\w+\.c)', \
+																file_path)[0])
+
+
 class	ft_helper():
-	def	__init__(self, makefile, makefile_var, header, src_folder):
+	def	__init__(self, makefile, makefile_var, header, src_folder, \
+													makefile_path_depth=0):
 		self.cwd = os.getcwd()
 		self.makefile = makefile
 		self.makefile_var = makefile_var
+		self.makefile_path_depth = makefile_path_depth
 		self.header =  header
 		self.header_begin = \
 			"/* ########################################################################## */\n" \
@@ -89,23 +121,34 @@ class	ft_helper():
 		for filename, function in self.c_files.items():
 			self.get_function(filename, function)
 
+	def	get_makefile_get_src(self, base, file_path):
+		if self.makefile_path_depth == 0:
+			return(base + file_path.replace(self.cwd + '/', ''))
+		else:
+			return (base + \
+				self.regex.get_file_path(file_path, self.makefile_path_depth))
+
+
 	def	get_src_makefile_multiple(self, file_str):
 		src_makefile_str = str()
 		first_src = self.regex.re_get_first_src_makefile.findall(file_str)[0]
 		nb_tab = first_src.count('\t')
 		first_src_path = list(self.c_files.keys())[0]
 		last_src_path = list(self.c_files.keys())[-1]
-		src_makefile_str += 'SRC_C' + str('\t' * nb_tab) + ":= " + \
-			first_src_path.replace(self.src_folder + '/', '') + " \\\n"
+		src_makefile_str += self.get_makefile_get_src(
+			self.makefile_var + str('\t' * nb_tab) + ":= ", first_src_path) + \
+			" \\\n"
 		c_files = dict(self.c_files)
 		del(c_files[first_src_path])
 		for file_path in c_files:
 			if file_path != last_src_path:
-				src_makefile_str += str('\t' * (nb_tab + 1)) + "   " + \
-				file_path.replace(self.src_folder + '/', '') + ' \\\n'
+				src_makefile_str += self.get_makefile_get_src(
+					str('\t' * (nb_tab + 1)) + "   ", file_path
+				) + " \\\n"
 			else:
-				src_makefile_str += str('\t' * (nb_tab + 1)) + "   " + \
-				file_path.replace(self.src_folder + '/', '')
+				src_makefile_str += self.get_makefile_get_src(
+					str('\t' * (nb_tab + 1)) + "   ", file_path
+				)
 		return(src_makefile_str)
 
 	def	get_src_makefile_one(self, file_str):
@@ -113,36 +156,22 @@ class	ft_helper():
 		first_src = self.regex.re_get_first_src_makefile.findall(file_str)[0]
 		nb_tab = first_src.count('\t')
 		first_src_path = list(self.c_files.keys())[0]
-		src_makefile_str += 'SRC_C' + str('\t' * nb_tab) + ":= " + \
+		src_makefile_str += self.makefile_var + str('\t' * nb_tab) + ":= " + \
 			first_src_path.replace(self.src_folder + '/', '')
 		return(src_makefile_str)
 
 	def	replace_src_makefile(self):
 		with open(self.makefile, 'r') as f:
 			file_str = f.read()
-		self.have_backslash = \
-					self.regex.re_get_first_src_makefile.findall(file_str)[0]
 		if len(self.c_files) == 1:
 			to_replace = self.get_src_makefile_one(file_str)
 		else:
 			to_replace = self.get_src_makefile_multiple(file_str)
-		if self.have_backslash[-1] == '\\':
-			""" TODO
-				fix find last_src_makefile regex
-			"""
-			pattern = re.escape(self.have_backslash) + \
-				r'.*' + \
-				self.regex.re_get_last_src_makefile.findall(file_str)[0]
-			file_str_replace = file_str.replace(
-				re.findall(pattern, file_str, flags=re.DOTALL)[0],
-				to_replace
-			)
-		else:
-			pattern = re.escape(self.have_backslash)
-			file_str_replace = file_str.replace(
-				re.findall(pattern, file_str, flags=re.DOTALL)[0],
-				to_replace
-			)
+		from_replace = self.regex.get_src_makefile(file_str)
+		file_str_replace = file_str.replace(
+			from_replace,
+			to_replace
+		)
 		with open(self.makefile, 'w') as f:
 			f.write(file_str_replace)
 
@@ -204,58 +233,17 @@ class	ft_helper():
 
 if __name__ == "__main__":
 	config = {
-		"makefile":		"Makefile",
-		"makefile_var":	"SRC_CHK",
-		"header":		"include/libft_check.h",
-		"src_folder":	"src/check"
+		"makefile":		"philo/Makefile",
+		"makefile_var":	"SRC_C",
+		"header":		"philo/philosophers.h",
+		"src_folder":	"philo"
 	}
-	ft_libft_check = ft_helper(**config)
-	exit()
+	philo = ft_helper(**config)
 
 	config = {
-		"makefile":		"Makefile",
-		"makefile_var":	"SRC_INP",
-		"header":		"include/libft_input.h",
-		"src_folder":	"src/input"
+		"makefile":		"philo_bonus/Makefile",
+		"makefile_var":	"SRC_C",
+		"header":		"philo_bonus/philosophers_bonus.h",
+		"src_folder":	"philo_bonus"
 	}
-	ft_libft_input = ft_helper(**config)
-
-	config = {
-		"makefile":		"Makefile",
-		"makefile_var":	"SRC_INT",
-		"header":		"include/libft_integer.h",
-		"src_folder":	"src/integer"
-	}
-	ft_libft_integer = ft_helper(**config)
-
-	config = {
-		"makefile":		"Makefile",
-		"makefile_var":	"SRC_LST",
-		"header":		"include/libft_list.h",
-		"src_folder":	"src/list"
-	}
-	ft_libft_list = ft_helper(**config)
-
-	config = {
-		"makefile":		"Makefile",
-		"makefile_var":	"SRC_MEM",
-		"header":		"include/libft_memory.h",
-		"src_folder":	"src/memory"
-	}
-	ft_libft_memory = ft_helper(**config)
-
-	config = {
-		"makefile":		"Makefile",
-		"makefile_var":	"SRC_PRT",
-		"header":		"include/libft_print.h",
-		"src_folder":	"src/print"
-	}
-	ft_libft_print = ft_helper(**config)
-
-	config = {
-		"makefile":		"Makefile",
-		"makefile_var":	"SRC_STR",
-		"header":		"include/libft_string.h",
-		"src_folder":	"src/string"
-	}
-	ft_libft_string = ft_helper(**config)
+	philo_bonus = ft_helper(**config)
