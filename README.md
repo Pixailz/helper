@@ -4,14 +4,16 @@ Helper to make life easier, and effiency btw
 
 ## TODO
 
-1. make things clear
+1. support \*\* like ft_split (char \*\*ft_split)
+1. don't include static prototype
+2. . make things clear
 	- prototype work fine
 	- src_makefile lil' bit messy, rewrite all the things
 		1. get string to replace from
 		2. get string to replace
 		3. replace in str
 		4. rewrite file
-2. write usage
+1. write usage
 
 ## TIPS
 
