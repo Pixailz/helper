@@ -24,8 +24,8 @@ class RegexFinder():
 
 	def	compile_all_regex(self, makefile_var):
 		self.re_function_infile = re.compile(
-			r'^\w+\*?\s+\*?\w+\*?\s+\*?\w+\(.*\)$|' +
-			r'^\w+\*?\s+\*?\w+?\(.*\)$',
+			r'^\w+\*?\*?\s+\*?\*?\w+\*?\*?\s+\*?\*?\w+\(.*\)$|' +
+			r'^\w+\*?\*?\s+\*?\*?\w+?\(.*\)$',
 			**self.options
 		)
 		self.re_c_files = re.compile(r'.*\.c', re.ASCII)
@@ -40,7 +40,7 @@ class RegexFinder():
 			**self.options
 		)
 		self.re_proto_type_len = re.compile(
-			r'^(\w+\*?\s+|\w+\*?\s+\*?\w+\*?\s+)\*?\w*\(.*\)$',
+			r'^(\w+\*?\*?\s+|\w+\*?\*?\s+\*?\*?\w+\*?\*?\s+)\*?\*?\w*\(.*\)$',
 			**self.options
 		)
 
