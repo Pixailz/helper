@@ -4,15 +4,13 @@ Helper to make life easier, and effiency btw
 
 ## TODO
 
-1. support \*\* like ft_split (char \*\*ft_split)
-1. don't include static prototype
-2. . make things clear
+1. . make things clear
 	- prototype work fine
 	- src_makefile lil' bit messy, rewrite all the things
 		1. get string to replace from
-		2. get string to replace
-		3. replace in str
-		4. rewrite file
+		1. get string to replace
+		1. replace in str
+		1. rewrite file
 1. write usage
 
 ## TIPS
@@ -40,6 +38,15 @@ config = {
 	"src_folder":	"philo_bonus"
 }
 philo_bonus = ft_helper(**config)
+
+# minishell
+config = {
+	"makefile":		"Makefile",
+	"makefile_var":	"SRC_C",
+	"header":		"inc/minishell.h",
+	"src_folder":	"src"
+}
+minishell = ft_helper(**config)
 
 # ft_libft
 config = {
