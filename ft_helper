@@ -24,8 +24,8 @@ class RegexFinder():
 
 	def	compile_all_regex(self, makefile_var):
 		self.re_function_infile = re.compile(
-			r'^(?!static)\w+\*?\*?\s+\*?\*?\w+\*?\*?\s+\*?\*?\w+\(.*\)$|' +
-			r'^(?!static)\w+\*?\*?\s+\*?\*?\w+?\(.*\)$',
+			r'^(?!static)\w+\*?\*?\s+\*?\*?(?!main\()\w+\*?\*?\s+\*?\*?\w+\(.*\)$|' +
+			r'^(?!static)\w+\*?\*?\s+\*?\*?(?!main\()\w+?\(.*\)$',
 			**self.options
 		)
 		self.re_c_files = re.compile(r'.*\.c', re.ASCII)
