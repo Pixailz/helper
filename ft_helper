@@ -28,8 +28,8 @@ class RegexFinder():
 			r'^(?!static)\w+\*?\*?\s+\*?\*?(?!main\()\w+?\(.*\)$',
 			**self.options
 		)
-		self.re_c_files = re.compile(r'.*\.c', re.ASCII)
-		self.re_h_files = re.compile(r'.*\.h', re.ASCII)
+		self.re_c_files = re.compile(r'.*\.c$', re.ASCII)
+		self.re_h_files = re.compile(r'.*\.h$', re.ASCII)
 		self.re_get_header = re.compile(r'^#include "(.*)"')
 		self.re_get_first_src_makefile = re.compile(
 			r'^' + re.escape(makefile_var) + r'\s+:=.*\\?$'
