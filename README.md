@@ -18,6 +18,7 @@ Helper to make life easier, and effiency btw
 		1. replace in str
 		1. rewrite file
 1. write usage
+1. finishe rewriting
 
 ## TIPS
 

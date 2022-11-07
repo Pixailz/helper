@@ -1,78 +1,20 @@
 #!/usr/bin/env python3
 
+# built in import
 from pprint import pprint
 import re
 import os
 
-"""
-class SrcMakefile():
+# custom import
+from modules.regex import RegexFinder
+
+class makefileHelp():
 	def __init__(self):
 		pass
 
-class Proto():
-	def __init__(self, src_files, header):
-		self.c_files = src_files
-		self.header = header
-"""
-
-class RegexFinder():
-	def	__init__(self, makefile_var):
-		self.options = {
-			"flags": re.MULTILINE | re.ASCII
-		}
-		self.compile_all_regex(makefile_var)
-
-	def	compile_all_regex(self, makefile_var):
-		self.re_function_infile = re.compile(
-			r'^(?!static)\w+\*?\*?\s+\*?\*?(?!main\()\w+\*?\*?\s+\*?\*?\w+\(.*\)$|' +
-			r'^(?!static)\w+\*?\*?\s+\*?\*?(?!main\()\w+?\(.*\)$',
-			**self.options
-		)
-		self.re_c_files = re.compile(r'.*\.c$', re.ASCII)
-		self.re_h_files = re.compile(r'.*\.h$', re.ASCII)
-		self.re_get_header = re.compile(r'^#include "(.*)"')
-		self.re_get_first_src_makefile = re.compile(
-			r'^' + re.escape(makefile_var) + r'\s+:=.*\\?$'
-			, **self.options
-		)
-		self.re_get_last_src_makefile = re.compile(
-			r'^\s+\w+.*\.c$',
-			**self.options
-		)
-		self.re_proto_type_len = re.compile(
-			r'^(\w+\*?\*?\s+|\w+\*?\*?\s+\*?\*?\w+\*?\*?\s+)\*?\*?\w*\(.*\)$',
-			**self.options
-		)
-
-	def	get_src_makefile(self, file_str):
-		current_line = self.re_get_first_src_makefile.findall(file_str)
-		if len(current_line) == 0:
-			print("Error finding makefile_var")
-			exit()
-		elif (current_line[0][-1] != '\\'):
-			return (current_line[0])
-		src_makefile = current_line[0]
-		current_line = re.findall(
-			re.escape(src_makefile) + r'\n(\s+\w+.*\.c \\?)$',
-			file_str,
-			**self.options
-		)
-		if len(current_line) == 0:
-			return (src_makefile)
-		while current_line[0][-1] == '\\':
-			src_makefile += '\n' + current_line[0]
-			current_line = re.findall(
-				re.escape(src_makefile) + r'\n(\s+\w+.*\.c ?\\?)$',
-				file_str,
-				**self.options
-			)
-		src_makefile += '\n' + current_line[0]
-		return (src_makefile)
-
-	def	get_file_path(self, file_path, depth):
-		return (re.findall(r'/(' + (r'\w+/' * (depth - 1)) + r'\w+\.c)', \
-																file_path)[0])
-
+class headerHelp():
+	def __init__(self):
+		pass
 
 class	ft_helper():
 	def	__init__(self, makefile, makefile_var, header, src_folder, \
@@ -89,7 +31,8 @@ class	ft_helper():
 		self.header_end = \
 			"/* ########################################################################## */"
 		self.src_folder = os.path.join(self.cwd, src_folder)
-		self.regex = RegexFinder(makefile_var)
+		self.regex = RegexFinder()
+		self.regex.compile_all_regex(makefile_var)
 		self.get_files()
 		self.get_function_all_files()
 		self.replace_proto_header()
@@ -102,19 +45,19 @@ class	ft_helper():
 				self.files.append(os.path.join(dirpath, file))
 		self.files = sorted(self.files)
 		self.c_files = { f: list()
-			for f in self.files if self.regex.re_c_files.findall(f)
+			for f in self.files if self.regex.c_files.findall(f)
 		}
 
 	def	get_function(self, filename, function):
 		file_str = str()
 		with open(filename, 'r') as f:
 			file_str = f.read()
-		# header = self.regex.re_get_header.findall(file_str)
+		# header = self.regex.headers_file.findall(file_str)
 		# if len(header) == 0:
 		# 	function.append(None)
 		# else:
 		# 	function.extend(header)
-		function_list = sorted(self.regex.re_function_infile.findall(file_str))
+		function_list = sorted(self.regex.functions_c_file.findall(file_str))
 		function.extend(function_list)
 
 	def get_function_all_files(self):
@@ -131,7 +74,7 @@ class	ft_helper():
 
 	def	get_src_makefile_multiple(self, file_str):
 		src_makefile_str = str()
-		first_src = self.regex.re_get_first_src_makefile.findall(file_str)[0]
+		first_src = self.regex.first_src_makefile.findall(file_str)[0]
 		nb_tab = first_src.count('\t')
 		first_src_path = list(self.c_files.keys())[0]
 		last_src_path = list(self.c_files.keys())[-1]
@@ -153,11 +96,11 @@ class	ft_helper():
 
 	def	get_src_makefile_one(self, file_str):
 		src_makefile_str = str()
-		first_src = self.regex.re_get_first_src_makefile.findall(file_str)[0]
+		first_src = self.regex.first_src_makefile.findall(file_str)[0]
 		nb_tab = first_src.count('\t')
 		first_src_path = list(self.c_files.keys())[0]
-		src_makefile_str += self.makefile_var + str('\t' * nb_tab) + ":= " + \
-			first_src_path.replace(self.src_folder + '/', '')
+		src_makefile_str += self.get_makefile_get_src(
+			self.makefile_var + str('\t' * nb_tab) + ":= ", first_src_path)
 		return(src_makefile_str)
 
 	def	replace_src_makefile(self):
@@ -179,14 +122,14 @@ class	ft_helper():
 		max_len = 0
 		for functions in self.c_files.values():
 			for function in functions:
-				tmp_len = len(self.regex.re_proto_type_len.findall(function)[0])
+				tmp_len = len(self.regex.function_type_len.findall(function)[0])
 				tmp_len = (tmp_len - 1) + (4 - (tmp_len -1) % 4)
 				if tmp_len > max_len:
 					max_len = tmp_len
 		return (max_len)
 
 	def	arrange_proto(self, function, nb_tab):
-		current_len = len(self.regex.re_proto_type_len.findall(function)[0])
+		current_len = len(self.regex.function_type_len.findall(function)[0])
 		current_tab = int(((current_len - 1) + (4 - (current_len -1) % 4)) / 4)
 		tab_left = int((nb_tab + (4 - nb_tab % 4)) / 4) - current_tab
 		function = function.replace('\t', '\t' * tab_left)
@@ -233,17 +176,9 @@ class	ft_helper():
 
 if __name__ == "__main__":
 	config = {
-		"makefile":		"philo/Makefile",
+		"makefile":		"minishell/Makefile",
 		"makefile_var":	"SRC_C",
-		"header":		"philo/philosophers.h",
-		"src_folder":	"philo"
+		"header":		"minishell/inc/minishell.h",
+		"src_folder":	"minishell/src"
 	}
-	philo = ft_helper(**config)
-
-	config = {
-		"makefile":		"philo_bonus/Makefile",
-		"makefile_var":	"SRC_C",
-		"header":		"philo_bonus/philosophers_bonus.h",
-		"src_folder":	"philo_bonus"
-	}
-	philo_bonus = ft_helper(**config)
+	minishell = ft_helper(**config)
