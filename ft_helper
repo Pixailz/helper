@@ -18,7 +18,7 @@ class headerHelp():
 
 class	ft_helper():
 	def	__init__(self, makefile, makefile_var, header, src_folder, \
-													makefile_path_depth=0):
+				 makefile_path_depth=0):
 		self.cwd = os.getcwd()
 		self.makefile = makefile
 		self.makefile_var = makefile_var
@@ -72,35 +72,41 @@ class	ft_helper():
 				self.regex.get_file_path(file_path, self.makefile_path_depth))
 
 
+	def get_src_makefile_tab(self, first_src):
+		tab_nb = first_src.count('\t')
+		len_makefile_var = int(len(self.makefile_var) / 4)
+
+		return ((tab_nb, tab_nb + len_makefile_var))
+
 	def	get_src_makefile_multiple(self, file_str):
 		src_makefile_str = str()
 		first_src = self.regex.first_src_makefile.findall(file_str)[0]
-		nb_tab = first_src.count('\t')
+		nb_tab_first, nb_tab_follow = self.get_src_makefile_tab(first_src)
 		first_src_path = list(self.c_files.keys())[0]
 		last_src_path = list(self.c_files.keys())[-1]
 		src_makefile_str += self.get_makefile_get_src(
-			self.makefile_var + str('\t' * nb_tab) + ":= ", first_src_path) + \
+			self.makefile_var + str('\t' * nb_tab_first) + ":= ", first_src_path) + \
 			" \\\n"
 		c_files = dict(self.c_files)
 		del(c_files[first_src_path])
 		for file_path in c_files:
 			if file_path != last_src_path:
 				src_makefile_str += self.get_makefile_get_src(
-					str('\t' * (nb_tab + 1)) + "   ", file_path
+					str('\t' * (nb_tab_follow)) + "   ", file_path
 				) + " \\\n"
 			else:
 				src_makefile_str += self.get_makefile_get_src(
-					str('\t' * (nb_tab + 1)) + "   ", file_path
+					str('\t' * (nb_tab_follow)) + "   ", file_path
 				)
 		return(src_makefile_str)
 
 	def	get_src_makefile_one(self, file_str):
 		src_makefile_str = str()
 		first_src = self.regex.first_src_makefile.findall(file_str)[0]
-		nb_tab = first_src.count('\t')
+		nb_tab_first = self.get_src_makefile_tab(first_src)
 		first_src_path = list(self.c_files.keys())[0]
 		src_makefile_str += self.get_makefile_get_src(
-			self.makefile_var + str('\t' * nb_tab) + ":= ", first_src_path)
+			self.makefile_var + str('\t' * nb_tab_first[0]) + ":= ", first_src_path)
 		return(src_makefile_str)
 
 	def	replace_src_makefile(self):
