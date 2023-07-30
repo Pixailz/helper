@@ -1,4 +1,4 @@
-# ft_helper
+# helper
 
 Helper to make life easier, and effiency btw
 
