@@ -25,8 +25,8 @@ class Makefile():
 		srcs = [ item for item in sorted(srcs) ]
 		formated = []
 		formated.append(f"{var} := {srcs[0]}")
-		srcs.pop(0)
 		if (len(srcs) != 1):
+			srcs.pop(0)
 			var_len = len(var) + 4
 			tab_str = "\t" * int(var_len / 4) + " " * (var_len % 4)
 			formated[0] += " \\"
@@ -42,21 +42,25 @@ class Makefile():
 
 	def	get_src(self, var, folder):
 		target_dir = os.path.join(self.src_dir, folder)
-		log.print(f"target dir{a.SEP}{target_dir}", mode = p.DEBUG, level = 1)
+		log.print(f"target dir{a.SEP}[{target_dir}]", mode = p.DEBUG, level = 1)
 		files = []
 		for (dirpath, dirname, filename) in os.walk(target_dir):
 			for file in filename:
 				file_path = f"{dirpath}/{file}".removeprefix(self.src_dir + '/')
-				log.print(f"file found {file_path}", mode = p.DEBUG, level = 3)
+				log.print(f"file found [{file_path}]", mode = p.DEBUG, level = 3)
 				files.append(file_path)
+		log.print(f"{len(files)} file found for {a.RED}{folder}{a.RST}")
 		return (self.format_src(var, *files))
 
 	def	update_makefile(self):
 		for item in self.makefile_var:
 			for var, folder in item.items():
 				from_replace = reg.get_var_make(var, self.makefile_str)
+				if not from_replace:
+					log.print(f"[{var}] not found", mode = p.WARN)
+					continue
 				to_replace = self.get_src(var, folder)
 				self.makefile_str = self.makefile_str.replace(from_replace, to_replace)
-		log.print(f"[{self.makefile}] formated\n{self.makefile_str}", mode = p.DEBUG, level = 1)
+		log.print(f"[{self.makefile}] formated\n{self.makefile_str}", mode = p.DEBUG, level = 4)
 		with open(self.makefile, 'w') as f:
 			f.write(self.makefile_str)
