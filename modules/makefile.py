@@ -9,7 +9,7 @@ class Makefile():
 		self.makefile_var = []
 		self.makefile_path_depth = makefile_path_depth
 
-	def	add_var(self, var, folder):
+	def	add_var(self, var, folder=None):
 		log.print(f"{var}{a.SEP}{folder}", p.DEBUG, 1)
 		self.makefile_var.append({var: folder})
 
@@ -33,7 +33,10 @@ class Makefile():
 		return formated
 
 	def	get_src(self, var, folder):
-		target_dir = os.path.join(self.src_dir, folder)
+		if folder:
+			target_dir = os.path.join(self.src_dir, folder)
+		else:
+			target_dir = self.src_dir
 		log.print(f"target dir{a.SEP}[{target_dir}]", p.DEBUG, 1)
 		files = []
 		for (dirpath, dirname, filename) in os.walk(target_dir):
