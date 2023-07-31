@@ -82,15 +82,17 @@ class Setup():
 		self.git_config = os.path.join(os.path.join(CWD, '.git'), "config")
 
 	def	launch(self):
+		log.print("Executing helper (setup)", p.INFO, 1)
 		if not os.path.isfile(self.git_config):
-			log.print(f"{self.git_config} not found", p.FAILURE)
+			log.print(f"[{self.git_config}] not found", p.FAILURE)
 			return
 		with open(self.git_config, 'r') as f:
 			git_config_str = f.read()
 		founded = reg.get_git_name.findall(git_config_str)
 		if not len(founded):
-			log.print(f"repo name not found in {self.git_config}", p.FAILURE)
+			log.print(f"repo name not found in [{self.git_config}]", p.FAILURE)
 			return
+		log.print(f"repo name found [{a.CYAN}{founded[0]}{a.RST}]", p.SUCCESS)
 		func = None
 		for item in dir(Setup):
 			if item == founded[0]:
@@ -99,6 +101,6 @@ class Setup():
 			log.print(f"{founded[0]} not implemented yet", p.FAILURE)
 			return
 		getattr(Setup, func)()
-		log.print(f"successfully executed {func}", p.SUCCESS)
+		log.print(f"successfully executed [{a.GREEN}{func}{a.RST}]", p.SUCCESS)
 
 setup = Setup()

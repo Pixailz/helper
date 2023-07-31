@@ -92,17 +92,20 @@ class Prototype():
 				else:
 					self.header_src_dir = self.src_dir
 				if not os.path.isfile(self.header):
-					log.print(f"file not found {self.header}", p.WARN)
+					log.print(f"file not found [{self.header}]", p.WARN)
 					return
 				if not os.path.isdir(self.header_src_dir):
-					log.print(f"folder not found {self.header_src_dir}", p.WARN)
+					log.print(f"folder not found [{self.header_src_dir}]", p.WARN)
 					return
 				if self.get_header():
-					log.print(f"block not found in {self.header}", p.WARN)
+					log.print(f"block not found in [{self.header}]", p.WARN)
 					return
 				if self.get_proto():
-					log.print(f"no prototype found in {self.header}", p.WARN)
+					log.print(f"no prototype found in [{self.header}]", p.WARN)
 					return
+				log_str = f"found [{a.GREEN}{len(self.to_replace)}{a.RST}] "
+				log_str += f"prototype for [{os.path.basename(self.header)}]"
+				log.print(log_str, p.SUCCESS, 1)
 				self.header_str.insert(self.src_pos, ''.join(self.to_replace))
 				with open(self.header, 'w') as f:
 					f.write(''.join(self.header_str))

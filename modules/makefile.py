@@ -44,7 +44,7 @@ class Makefile():
 				file_path = f"{dirpath}/{file}".removeprefix(self.src_dir + '/')
 				log.print(f"file found [{file_path}]", p.DEBUG, 3)
 				files.append(file_path)
-		log.print(f"{len(files)} file found for {a.RED}{folder}{a.RST}")
+		log.print(f"[{a.GREEN}{len(files)}{a.RST}] file found for [{a.RED}{var}{a.RST}]")
 		return (self.format_src(var, *files))
 
 	def	update_makefile(self):
