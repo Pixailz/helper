@@ -59,6 +59,25 @@ class Setup():
 		header.add_header("ft_ping.h")
 		header.update_include()
 
+	@staticmethod
+	def	SupaBlank():
+		src_dir = "src/mandatory"
+		config = {
+			"makefile":		"mk/srcs.mk",
+			"src_dir":		src_dir
+		}
+		makefile = Makefile(**config)
+		makefile.add_var("SRC_C_MANDATORY")
+		makefile.update_makefile()
+
+		config = {
+			"inc_dir":	"inc",
+			"src_dir":	src_dir
+		}
+		header = Prototype(**config)
+		header.add_header("template.h")
+		header.update_include()
+
 	def	__init__(self):
 		self.git_config = os.path.join(os.path.join(CWD, '.git'), "config")
 
