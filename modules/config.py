@@ -2,7 +2,7 @@ from os import getcwd
 
 CWD = getcwd()
 
-DEBUG = 0
+DEBUG = -1
 
 """
 -1  all
