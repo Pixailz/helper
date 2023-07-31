@@ -4,9 +4,11 @@ class	RegexFinder():
 
 	def	__init__(self):
 		self.get_src_header = re.compile( r'^//.*?\.c.*?;$\n\n', re.S | re.M)
-		self.re_compile_proto_func()
+		re_git_name = r'^\[remote \"origin\"\]\n\s+url = .*?/(.*?)$'
+		self.get_git_name = re.compile( re_git_name, re.S | re.M)
+		self.re_compile_proto()
 
-	def	re_compile_proto_func(self):
+	def	re_compile_proto(self):
 		ptr = r'\*?' * 3
 		space = r'\s+'
 		t_begin = r'\w+' + ptr

@@ -3,18 +3,4 @@
 from modules import *
 
 if __name__ == "__main__":
-	config = {
-		"makefile":		"mk/srcs.mk",
-		"src_dir":		"src/mandatory"
-	}
-	makefile = Makefile(**config)
-	makefile.add_var("SRC_C_MANDATORY")
-	makefile.update_makefile()
-
-	config = {
-		"inc_dir":	"inc",
-		"src_dir":	"src/mandatory"
-	}
-	header = Prototype(**config)
-	header.add_header("ft_ping.h")
-	header.update_include()
+	setup.launch()
