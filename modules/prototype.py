@@ -71,7 +71,8 @@ class Prototype():
 		self.get_header_len()
 		to_replace = []
 		for file_path, function in self.to_replace.items():
-			to_replace.append(f"// {os.path.basename(file_path)}\n")
+			comment = file_path.removeprefix(self.src_dir + '/')
+			to_replace.append(f"// {comment}\n")
 			for proto in function:
 				tab = '\t' * (self.max_len - int(len(proto[0]) / 4))
 				new_line = f"{proto[0]}{tab}{proto[1]}"
