@@ -28,9 +28,7 @@ class Log():
 	def	get_caller(index = 0):
 		previous_frame = inspect.stack()[1 + index]
 		filename = os.path.basename(previous_frame.filename)
-		position = f"{previous_frame.positions.lineno},"
-		position += f"{previous_frame.positions.col_offset}"
-		# position += f"{previous_frame.positions.end_col_offset}"
+		position = f"{previous_frame.lineno}"
 		return (f"{filename}|{previous_frame.function}:{position}")
 
 	@staticmethod

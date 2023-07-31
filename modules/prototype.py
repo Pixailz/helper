@@ -79,7 +79,9 @@ class Prototype():
 				for line in new_line.split('\n'):
 					len_line = len(line.expandtabs(4))
 					if len_line > 80:
-						log.print(f"line too long{a.SEP}{len_line}\n\t[{line}]", p.WARN, 2)
+						report = f"line too long in [{a.RED}{file_path}{a.RST}]"
+						report += f"{a.SEP}{len_line}\n\t[{line}]"
+						log.print(report, p.WARN, 2)
 				to_replace.append(f"{new_line}")
 			to_replace.append('\n')
 		self.to_replace = to_replace
