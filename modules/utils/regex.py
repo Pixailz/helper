@@ -4,7 +4,7 @@ class	RegexFinder():
 
 	def	__init__(self):
 		self.get_src_header = re.compile( r'^// [\w/]+\.c$.*?;$\n\n', re.S | re.M)
-		re_git_name = r'^\[remote \"origin\"\]\n\s+url = .*?/(.*?)$'
+		re_git_name = r'^\[remote \"origin\"\]\n\s+url = (https://github\.com/|git@github\.com:).*?/(.*?)$'
 		self.get_git_name = re.compile( re_git_name, re.S | re.M)
 		self.re_compile_proto()
 
