@@ -20,7 +20,6 @@ class Setup():
 		makefile.add_var("SRC_LNX", "linux")
 		makefile.add_var("SRC_NET_IPV4", "network/ipv4")
 		makefile.add_var("SRC_ERR", "error")
-		makefile.add_var("SRC_C_MANDATORY")
 		makefile.update_makefile()
 
 		config = {
@@ -39,7 +38,6 @@ class Setup():
 		header.add_header("libft_linux.h", "linux")
 		header.add_header("libft_network/ipv4.h", "network/ipv4")
 		header.add_header("libft_error.h", "error")
-		header.add_header("ft_ping.h")
 		header.update_include()
 
 	@staticmethod
