@@ -106,16 +106,16 @@ class Setup():
 		with open(self.git_config, 'r') as f:
 			git_config_str = f.read()
 		founded = reg.get_git_name.findall(git_config_str)
-		if not len(founded):
+		if not len(founded[0]):
 			log.print(f"repo name not found in [{self.git_config}]", p.FAILURE)
 			return
-		log.print(f"repo name found [{a.CYAN}{founded[0]}{a.RST}]", p.SUCCESS)
+		log.print(f"repo name found [{a.CYAN}{founded[0][1]}{a.RST}]", p.SUCCESS)
 		func = None
 		for item in dir(Setup):
-			if item == founded[0]:
+			if item == founded[0][1]:
 				func = item
 		if not func:
-			log.print(f"{founded[0]} not implemented yet", p.FAILURE)
+			log.print(f"{founded[0][1]} not implemented yet", p.FAILURE)
 			return
 		getattr(Setup, func)()
 		log.print(f"successfully executed [{a.GREEN}{func}{a.RST}]", p.SUCCESS)
