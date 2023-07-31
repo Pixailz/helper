@@ -1,7 +1,5 @@
 from modules import *
 
-from pprint import pprint
-
 class Setup():
 	@staticmethod
 	def ft_libft():

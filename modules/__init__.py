@@ -15,7 +15,8 @@ from modules.utils.log import log
 from modules.utils.log import a
 from modules.utils.log import p
 from modules.utils.regex import reg
-from modules.utils.setup import setup
 
 from modules.prototype import Prototype
 from modules.makefile import Makefile
+
+from modules.utils.setup import setup
