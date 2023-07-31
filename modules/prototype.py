@@ -8,7 +8,7 @@ class Prototype():
 		log.print(f"Prototype base src dir {a.SEP}[{self.src_dir}]", p.DEBUG, 1)
 		self.headers = []
 
-	def	add_header(self, header, folder):
+	def	add_header(self, header, folder=None):
 		log.print(f"{header}{a.SEP}{folder}", p.DEBUG, 1)
 		self.headers.append({header: folder})
 
@@ -87,7 +87,10 @@ class Prototype():
 		for item in self.headers:
 			for header, folder in item.items():
 				self.header = os.path.join(self.inc_dir, header)
-				self.header_src_dir = os.path.join(self.src_dir, folder)
+				if folder:
+					self.header_src_dir = os.path.join(self.src_dir, folder)
+				else:
+					self.header_src_dir = self.src_dir
 				if not os.path.isfile(self.header):
 					log.print(f"file not found {self.header}", p.WARN)
 					return
