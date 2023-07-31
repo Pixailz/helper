@@ -4,13 +4,11 @@
 import re
 import os
 
-from pprint import pprint
-
 # custom import
-from modules.regex import re
+from modules.utils.regex import re
+from modules.utils.log import log
 from modules.makefile import Makefile
 from modules.prototype import Prototype
-from modules.log import log
 
 if __name__ == "__main__":
 	config = {

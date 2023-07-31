@@ -1,10 +1,8 @@
 import os
 
-from pprint import pprint
-
 from modules.config import CWD
-from modules.log import log, p, a
-from modules.regex import reg
+from modules.utils.log import log, p, a
+from modules.utils.regex import reg
 
 class Prototype():
 	def	__init__(self, inc_dir, src_dir):

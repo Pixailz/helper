@@ -1,10 +1,8 @@
 import os
 
-from pprint import pprint
-
 from modules.config import CWD
-from modules.regex import reg
-from modules.log import log, p, a
+from modules.utils.regex import reg
+from modules.utils.log import log, p, a
 
 class Makefile():
 	def	__init__(self, makefile, src_dir, makefile_path_depth=0):

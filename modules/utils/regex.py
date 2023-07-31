@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
-from modules.log import log, p, a
+from modules.utils.log import log, p, a
 
 import re
-
-from pprint import pprint
 
 class	RegexFinder():
 
