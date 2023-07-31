@@ -33,8 +33,8 @@ class Log():
 		previous_frame = inspect.stack()[1 + index]
 		filename = os.path.basename(previous_frame.filename)
 		position = f"{previous_frame.positions.lineno},"
-		position += f"{previous_frame.positions.col_offset}-"
-		position += f"{previous_frame.positions.end_col_offset}"
+		position += f"{previous_frame.positions.col_offset}"
+		# position += f"{previous_frame.positions.end_col_offset}"
 		return (f"{filename}|{previous_frame.function}:{position}")
 
 	@staticmethod
@@ -58,7 +58,8 @@ class Log():
 			case p.FAILURE:
 				title_color = a.RED
 				title_str = "FAIL"
-		header = f"[{title_color}{title_str}{a.RST}]"
+		header = f"[{a.RED}{level}{a.RST}]" if DEBUG else ""
+		header += f"[{title_color}{title_str}{a.RST}]"
 		header += "[" + title_color + Log.get_caller(1) + a.RST + "]"
 		print(header + a.SEP + msg)
 

@@ -4,9 +4,12 @@
 import re
 import os
 
+from pprint import pprint
+
 # custom import
 from modules.regex import re
 from modules.makefile import Makefile
+from modules.prototype import Prototype
 from modules.log import log
 
 if __name__ == "__main__":
@@ -27,3 +30,20 @@ if __name__ == "__main__":
 	makefile.add_var("SRC_NET_IPV4", "network/ipv4")
 	makefile.add_var("SRC_ERR", "error")
 	makefile.update_makefile()
+	config = {
+		"inc_dir":	"inc",
+		"src_dir":	"src"
+	}
+	header = Prototype(**config)
+	header.add_header("libft_integer.h", "integer")
+	header.add_header("libft_string.h", "string")
+	header.add_header("libft_memory.h", "memory")
+	header.add_header("libft_check.h", "check")
+	header.add_header("libft_list.h", "list")
+	header.add_header("libft_print.h", "print")
+	header.add_header("libft_input.h", "input")
+	header.add_header("libft_random.h", "random")
+	header.add_header("libft_linux.h", "linux")
+	header.add_header("libft_network/ipv4.h", "network/ipv4")
+	header.add_header("libft_error.h", "error")
+	header.update_include()
