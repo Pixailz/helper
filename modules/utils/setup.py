@@ -78,6 +78,23 @@ class Setup():
 		header.add_header("template.h")
 		header.update_include()
 
+		src_dir = "src/bonus"
+		config = {
+			"makefile":		"mk/srcs.mk",
+			"src_dir":		src_dir
+		}
+		makefile = Makefile(**config)
+		makefile.add_var("SRC_C_BONUS")
+		makefile.update_makefile()
+
+		config = {
+			"inc_dir":	"inc",
+			"src_dir":	src_dir
+		}
+		header = Prototype(**config)
+		header.add_header("template_bonus.h")
+		header.update_include()
+
 	def	__init__(self):
 		self.git_config = os.path.join(os.path.join(CWD, '.git'), "config")
 
