@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
 
-# built in import
-import re
-import os
-
-from pprint import pprint
-
-# custom import
-from modules.regex import re
-from modules.makefile import Makefile
-from modules.prototype import Prototype
-from modules.log import log
+from modules import *
 
 if __name__ == "__main__":
 	config = {
@@ -30,6 +20,7 @@ if __name__ == "__main__":
 	makefile.add_var("SRC_NET_IPV4", "network/ipv4")
 	makefile.add_var("SRC_ERR", "error")
 	makefile.update_makefile()
+
 	config = {
 		"inc_dir":	"inc",
 		"src_dir":	"src"
