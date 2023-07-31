@@ -1,8 +1,4 @@
-from modules.config import DEBUG, CWD
-
-import enum
-import inspect
-import os
+from modules import *
 
 class	p(enum.Enum):
 	INFO	= 0

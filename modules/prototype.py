@@ -1,8 +1,4 @@
-import os
-
-from modules.config import CWD
-from modules.utils.log import log, p, a
-from modules.utils.regex import reg
+from modules import *
 
 class Prototype():
 	def	__init__(self, inc_dir, src_dir):
