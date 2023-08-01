@@ -52,7 +52,7 @@ jobs:
         run: make
 
       - name: ✅ ft_libft push
-        run:
+        run: |+
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
           git remote set-url --push origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}/Pixailz/ft_libft
           git push
