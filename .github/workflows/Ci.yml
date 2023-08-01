@@ -12,6 +12,11 @@ on:
         required: true
         description: "the email used to commit"
 
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
+
 jobs:
   info:
     runs-on: ubuntu-latest
