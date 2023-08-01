@@ -5,11 +5,9 @@ run-name: Full helper CI/CD
 on:
   push:
     branches: [main]
-    paths:
-      - 'helper'
-      - 'modules/**/**.py'
-      - Makefile
-      - '**.mk'
+    # paths:
+    #   - 'helper'
+    #   - 'modules/**/**.py'
   pull_request:
     types: [opened]
 
