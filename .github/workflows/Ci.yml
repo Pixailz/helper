@@ -14,9 +14,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
-  issues: write
-  repository-projects: write
 
 jobs:
   info:
@@ -39,11 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⭐ Retrieve ft_libft
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           repository: "Pixailz/ft_libft"
           submodules: recursive
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⭐ Git commit
         run: |+
@@ -70,11 +66,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⭐ Retrieve ft_ping
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           repository: "Pixailz/ft_ping"
           submodules: recursive
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⭐ Git commit
         run: |+
@@ -101,11 +96,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⭐ Retrieve SupaBlank
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           repository: "Pixailz/SupaBlank"
           submodules: recursive
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⭐ Git commit
         run: |+
