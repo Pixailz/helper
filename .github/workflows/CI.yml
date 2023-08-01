@@ -9,6 +9,9 @@ on:
         required: true
         description: "the commit message to spread"
 
+permissions:
+  contents: write
+
 jobs:
   info:
     runs-on: ubuntu-latest
