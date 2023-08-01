@@ -38,7 +38,7 @@ jobs:
           git clone https://github.com/Pixailz/ft_ping
           rm -rf ft_ping/{lib/ft_libft,rsc/helper}
           cp -r {,ft_ping/lib/}ft_libft
-          cp -r SupaBlank/{lib/ft_libft/rsc/helper,rsc/helper}
+          cp -r ft_ping/{lib/ft_libft/rsc/helper,rsc/helper}
           git clone https://github.com/Pixailz/SupaBlank
           rm -rf SupaBlank/{lib/ft_libft,rsc/helper}
           cp -r {,SupaBlank/lib/}ft_libft
