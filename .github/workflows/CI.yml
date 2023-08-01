@@ -12,6 +12,9 @@ on:
         required: true
         description: "⭐ the email of the commit"
 
+permissions:
+  contents: write
+
 jobs:
   info:
     runs-on: ubuntu-latest
