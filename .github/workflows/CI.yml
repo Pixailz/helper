@@ -59,62 +59,56 @@ jobs:
       - name: ✅ ft_libft push
         run: git status && git push
 
-  # test-ft_ping:
-  #   needs: test-ft_libft
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: ⭐ Retrieve ft_ping
-  #       uses: actions/checkout@v2
-  #       with:
-  #         repository: "Pixailz/ft_ping"
-  #         submodules: recursive
+  test-ft_ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⭐ Retrieve ft_ping
+        uses: actions/checkout@v2
+        with:
+          repository: "Pixailz/ft_ping"
+          submodules: recursive
+          token: ${{ secrets.PAT_ACTIONS }}
 
-  #     - name: ⭐ Git commit
-  #       run: |+
-  #         git config --global user.name ${{ github.actor }}
-  #         git config --global user.email ${{ github.event.inputs.git_email }}
+      - name: ⭐ Configure and update
+        run: |+
+          git config user.name ${{ github.actor }}
+          git config user.email ${{ github.event.inputs.git_email }}
+          git submodule update --remote --recursive
+          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
 
-  #     - name: ⭐ Update submodule
-  #       run: git submodule update --remote
+      - name: 💬 Git status
+        run: |+
+          git status
 
-  #     - name: 💬 Git status
-  #       run: |+
-  #         git status
+      - name: 🔧 test ft_ping
+        run: make
 
-  #     - name: 🔧 test ft_ping
-  #       run: make
+      - name: ✅ ft_ping push
+        run: git status && git push
 
-  #     - name: ✅ ft_ping push
-  #       run: |+
-  #         git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
-  #         git push
+  test-SupaBlank:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⭐ Retrieve SupaBlank
+        uses: actions/checkout@v2
+        with:
+          repository: "Pixailz/SupaBlank"
+          submodules: recursive
+          token: ${{ secrets.PAT_ACTIONS }}
 
-  # test-SupaBlank:
-  #   needs: test-ft_libft
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: ⭐ Retrieve SupaBlank
-  #       uses: actions/checkout@v2
-  #       with:
-  #         repository: "Pixailz/SupaBlank"
-  #         submodules: recursive
+      - name: ⭐ Configure and update
+        run: |+
+          git config user.name ${{ github.actor }}
+          git config user.email ${{ github.event.inputs.git_email }}
+          git submodule update --remote --recursive
+          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
 
-  #     - name: ⭐ Git commit
-  #       run: |+
-  #         git config --global user.name ${{ github.actor }}
-  #         git config --global user.email ${{ github.event.inputs.git_email }}
+      - name: 💬 Git status
+        run: |+
+          git status
 
-  #     - name: ⭐ Update submodule
-  #       run: git submodule update --remote
+      - name: 🔧 test SupaBlank
+        run: make
 
-  #     - name: 💬 Git status
-  #       run: |+
-  #         git status
-
-  #     - name: 🔧 test SupaBlank
-  #       run: make
-
-  #     - name: ✅ SupaBlank push
-  #       run: |+
-  #         git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
-  #         git push
+      - name: ✅ SupaBlank push
+        run: git status && git push
