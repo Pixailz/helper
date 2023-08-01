@@ -43,6 +43,7 @@ jobs:
         with:
           repository: "Pixailz/ft_libft"
           submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⭐ Git commit
         run: |+
@@ -61,7 +62,6 @@ jobs:
 
       - name: ✅ ft_libft push
         run: |+
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Pixailz/SupaBlank
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
           git push
 
@@ -74,6 +74,7 @@ jobs:
         with:
           repository: "Pixailz/ft_ping"
           submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⭐ Git commit
         run: |+
@@ -92,7 +93,6 @@ jobs:
 
       - name: ✅ ft_ping push
         run: |+
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Pixailz/ft_ping
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
           git push
 
@@ -105,6 +105,7 @@ jobs:
         with:
           repository: "Pixailz/SupaBlank"
           submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⭐ Git commit
         run: |+
@@ -123,6 +124,5 @@ jobs:
 
       - name: ✅ SupaBlank push
         run: |+
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Pixailz/SupaBlank
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
           git push
