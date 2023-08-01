@@ -30,19 +30,12 @@ jobs:
           python3 --version
 
   test-ft_libft:
-    strategy:
-      matrix:
-        repo: [
-          "Pixailz/ft_libft",
-          "Pixailz/ft_ping",
-          "Pixailz/SupaBlank"
-        ]
     runs-on: ubuntu-latest
     steps:
-      - name: ⭐ Retrieve ${{ matrix.repo }}
+      - name: ⭐ Retrieve ft_libft
         uses: actions/checkout@v3
         with:
-          repository: "${{ matrix.repo }}"
+          repository: "Pixailz/ft_libft"
           submodules: recursive
 
       - name: ⭐ Git commit
@@ -57,10 +50,70 @@ jobs:
         run: |+
           git status
 
-      - name: 🔧 test ${{ matrix.repo }}
+      - name: 🔧 test ft_libft
         run: make
 
-      - name: ✅ ${{ matrix.repo }} push
+      - name: ✅ ft_libft push
+        run: |+
+          git commit -a -m "${{ github.event.inputs.commit_msg }}"
+          git status
+
+  test-ft_ping:
+    needs: test-ft_libft
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⭐ Retrieve ft_ping
+        uses: actions/checkout@v3
+        with:
+          repository: "Pixailz/ft_ping"
+          submodules: recursive
+
+      - name: ⭐ Git commit
+        run: |+
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ github.event.inputs.git_email }}
+
+      - name: ⭐ Update submodule
+        run: git submodule update --remote
+
+      - name: 💬 Git status
+        run: |+
+          git status
+
+      - name: 🔧 test ft_ping
+        run: make
+
+      - name: ✅ ft_ping push
+        run: |+
+          git commit -a -m "${{ github.event.inputs.commit_msg }}"
+          git status
+
+  test-SupaBlank:
+    needs: test-ft_libft
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⭐ Retrieve SupaBlank
+        uses: actions/checkout@v3
+        with:
+          repository: "Pixailz/SupaBlank"
+          submodules: recursive
+
+      - name: ⭐ Git commit
+        run: |+
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ github.event.inputs.git_email }}
+
+      - name: ⭐ Update submodule
+        run: git submodule update --remote
+
+      - name: 💬 Git status
+        run: |+
+          git status
+
+      - name: 🔧 test SupaBlank
+        run: make
+
+      - name: ✅ SupaBlank push
         run: |+
           git commit -a -m "${{ github.event.inputs.commit_msg }}"
           git status
