@@ -8,6 +8,9 @@ on:
       commit_msg:
         required: true
         description: "the commit message to spread"
+      git_email:
+        required: true
+        description: "the email used to commit"
 
 jobs:
   info:
@@ -26,7 +29,7 @@ jobs:
           gcc --verbose && echo
           python3 --version
 
-  test:
+  prepare-test:
     runs-on: ubuntu-latest
     steps:
       - name: ⭐ Retrieve all repo
@@ -43,17 +46,10 @@ jobs:
           rm -rf SupaBlank/{lib/ft_libft,rsc/helper}
           cp -r {,SupaBlank/lib/}ft_libft
           cp -r SupaBlank/{lib/ft_libft/rsc/helper,rsc/helper}
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ github.actor }}
 
-      - name: ⭐ test ft_libft
-        run: make -C test/ft_libft
-
-      - name: ⭐ test ft_libft
-        run: make -C test/ft_ping
-
-      - name: ⭐ test ft_libft
-        run: make -C test/SupaBlank
-
-      - name: ✅ commit
+      - name: ⭐ Git commit all
         run: |+
           cd test/ft_libft
           git add rsc/helper
@@ -70,8 +66,42 @@ jobs:
           cp -r {lib/ft_libft/,}rsc/helper
           git add lib/ft_libft rsc/helper
           git commit -m "${{ github.event.inputs.commit_msg }}"
-          git push
-          cd ../ft_ping
-          git push
-          cd ../ft_libft
-          git push
+
+  test-ft_libft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔧 test ft_libft
+        run: make -C test/ft_libft
+
+  push-ft_libft:
+    need: test-ft_libft
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✅ ft_libft push
+        run: cd test/ft_libft && git push
+
+  test-ft_ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔧 test ft_libft
+        run: make -C test/ft_ping
+
+  push-ft_ping:
+    need: test-ft_ping
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✅ ft_ping push
+        run: cd test/ft_ping && git push
+
+  test-SupaBlank:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔧 test ft_libft
+        run: make -C test/SupaBlank
+
+  push-SupaBlank:
+    need: test-SupaBlank
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✅ SupaBlank push
+        run: cd test/SupaBlank && git push
