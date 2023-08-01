@@ -46,6 +46,7 @@ jobs:
           git config user.name ${{ github.actor }}
           git config user.email ${{ github.event.inputs.git_email }}
           git submodule update --remote --recursive
+          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
 
       - name: 💬 Git status
         run: |+
@@ -55,10 +56,9 @@ jobs:
         run: make
 
       - name: ✅ ft_libft push
-        run: |+
-          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
-          git remote set-url --push origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Pixailz/ft_libft
-          git push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[helper:update] ${{ github.event.inputs.commit_msg }}"
 
   # test-ft_ping:
   #   needs: test-ft_libft
