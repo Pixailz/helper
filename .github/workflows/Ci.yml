@@ -30,12 +30,19 @@ jobs:
           python3 --version
 
   test-ft_libft:
+    strategy:
+      matrix:
+        repo: [
+          "Pixailz/ft_libft",
+          "Pixailz/ft_ping",
+          "Pixailz/SupaBlank"
+        ]
     runs-on: ubuntu-latest
     steps:
-      - name: ⭐ Retrieve ft_libft repo
+      - name: ⭐ Retrieve ${{ matrix.repo }}
         uses: actions/checkout@v3
         with:
-          repository: "Pixailz/ft_libft"
+          repository: "${{ matrix.repo }}"
           submodules: recursive
 
       - name: ⭐ Git commit
@@ -50,11 +57,10 @@ jobs:
         run: |+
           git status
 
-      - name: 🔧 test ft_libft
+      - name: 🔧 test ${{ matrix.repo }}
         run: make
 
-      - name: ✅ ft_libft push
+      - name: ✅ ${{ matrix.repo }} push
         run: |+
-          git add rsc/helper
-          git commit -m "${{ github.event.inputs.commit_msg }}"
+          git commit -a -m "${{ github.event.inputs.commit_msg }}"
           git status
