@@ -31,10 +31,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Retrieve ft_libft repo
-        uses: actions/checkout@v3
-        with:
-          repository: Pixailz/ft_lifbt
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: test
-        run: pwd
+      - name: Retriev ft_libft repo
+        run: |+
+          mkdir test && cd test
+          git clone https://github.com/Pixailz/ft_libft && cd ft_libft/rsc
+          rm -rf helper && git clone https://github.com/Pixailz/helper && cd ..
+          make
