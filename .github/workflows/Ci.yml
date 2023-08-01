@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 run-name: Update submodule CI/CD
 
@@ -55,8 +55,8 @@ jobs:
 
       - name: ✅ ft_libft push
         run: |+
-          git commit -a -m "${{ github.event.inputs.commit_msg }}"
-          git status
+          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+          git push
 
   test-ft_ping:
     needs: test-ft_libft
@@ -85,8 +85,8 @@ jobs:
 
       - name: ✅ ft_ping push
         run: |+
-          git commit -a -m "${{ github.event.inputs.commit_msg }}"
-          git status
+          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+          git push
 
   test-SupaBlank:
     needs: test-ft_libft
@@ -115,5 +115,5 @@ jobs:
 
       - name: ✅ SupaBlank push
         run: |+
-          git commit -a -m "${{ github.event.inputs.commit_msg }}"
-          git status
+          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+          git push
