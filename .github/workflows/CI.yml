@@ -7,10 +7,10 @@ on:
     inputs:
       commit_msg:
         required: true
-        description: "the commit message to spread"
-
-permissions:
-  contents: write
+        description: "⭐ the commit message to spread"
+      git_email:
+        required: true
+        description: "⭐ the email of the commit"
 
 jobs:
   info:
@@ -43,6 +43,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git submodule update --remote
+          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
 
       - name: 💬 Git status
         run: |+
@@ -52,9 +53,10 @@ jobs:
         run: make
 
       - name: ✅ ft_libft push
-        run: |+
-          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
-          git push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
 
   # test-ft_ping:
   #   needs: test-ft_libft
