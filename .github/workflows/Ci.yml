@@ -74,7 +74,7 @@ jobs:
         run: make -C test/ft_libft
 
   push-ft_libft:
-    need: test-ft_libft
+    needs: test-ft_libft
     runs-on: ubuntu-latest
     steps:
       - name: ✅ ft_libft push
@@ -87,7 +87,7 @@ jobs:
         run: make -C test/ft_ping
 
   push-ft_ping:
-    need: test-ft_ping
+    needs: test-ft_ping
     runs-on: ubuntu-latest
     steps:
       - name: ✅ ft_ping push
@@ -100,7 +100,7 @@ jobs:
         run: make -C test/SupaBlank
 
   push-SupaBlank:
-    need: test-SupaBlank
+    needs: test-SupaBlank
     runs-on: ubuntu-latest
     steps:
       - name: ✅ SupaBlank push
