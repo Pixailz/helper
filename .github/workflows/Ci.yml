@@ -31,9 +31,29 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Retriev ft_libft repo
+      - name: Retrieve all repo
         run: |+
           mkdir test && cd test
-          git clone https://github.com/Pixailz/ft_libft && cd ft_libft/rsc
-          rm -rf helper && git clone https://github.com/Pixailz/helper && cd ..
-          make
+          git clone https://github.com/Pixailz/ft_libft
+          rm -rf ft_libft/rsc/helper
+          git clone https://github.com/Pixailz/helper ft_libft/rsc/helper
+          git clone https://github.com/Pixailz/ft_ping
+          rm -rf ft_ping/lib/ft_libft
+          cp -r {,ft_ping/lib/}ft_libft
+          git clone https://github.com/Pixailz/SupaBlank
+          rm -rf SupaBlank/{lib/ft_libft,rsc/helper}
+          cp -r {,SupaBlank/lib/}ft_libft
+          cp -r SupaBlank/{lib/ft_libft/rsc/helper,rsc/helper}
+
+      - name: intermediary step
+        run:
+          pwd && ls -laR ..
+
+      - name: test ft_libft
+        run: make -C ft_libft
+
+      - name: test ft_libft
+        run: make -C ft_ping
+
+      - name: test ft_libft
+        run: make -C SupaBlank
