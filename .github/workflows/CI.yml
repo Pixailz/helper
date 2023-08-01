@@ -40,6 +40,7 @@ jobs:
         with:
           repository: "Pixailz/ft_libft"
           submodules: recursive
+          token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
 
       - name: ⭐ Configure and update
         run: |+
@@ -56,9 +57,7 @@ jobs:
         run: make
 
       - name: ✅ ft_libft push
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "[helper:update] ${{ github.event.inputs.commit_msg }}"
+        run: git status && git push
 
   # test-ft_ping:
   #   needs: test-ft_libft
