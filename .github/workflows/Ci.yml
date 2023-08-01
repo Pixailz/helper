@@ -61,6 +61,7 @@ jobs:
 
       - name: ✅ ft_libft push
         run: |+
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
           git push
 
@@ -91,6 +92,7 @@ jobs:
 
       - name: ✅ ft_ping push
         run: |+
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
           git push
 
@@ -121,5 +123,6 @@ jobs:
 
       - name: ✅ SupaBlank push
         run: |+
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
           git push
