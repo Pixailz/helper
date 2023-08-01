@@ -18,9 +18,9 @@ jobs:
     steps:
       - name: "💬 github"
         run: |+
-          echo "Who launched: ${{github.actor}}"
-          echo "On branch:    ${{github.ref_name}}"
-          echo "Commit sha:   ${{github.sha}}"
+          echo "Who launched: ${{ github.actor }}"
+          echo "On branch:    ${{ github.ref_name }}"
+          echo "Commit sha:   ${{ github.sha }}"
 
       - name: "💬 Bin utils"
         run: |+
@@ -29,48 +29,32 @@ jobs:
           gcc --verbose && echo
           python3 --version
 
-  prepare-ft_libft:
+  test-ft_libft:
     runs-on: ubuntu-latest
     steps:
       - name: ⭐ Retrieve ft_libft repo
-        run: |+
-          git clone https://github.com/Pixailz/ft_libft
-          rm -rf ft_libft/rsc/helper
-          git clone https://github.com/Pixailz/helper ft_libft/rsc/helper
+        uses: actions/checkout@v3
+        with:
+          repository: "Pixailz/ft_libft"
+          submodules: recursive
 
       - name: ⭐ Git commit
         run: |+
           git config --global user.name ${{ github.actor }}
-          git config --global user.email ${{ github.actor }}
-          cd ft_libft
-          git add rsc/helper
-          git commit -m "${{ github.event.inputs.commit_msg }}"
+          git config --global user.email ${{ github.event.inputs.git_email }}
 
-      - name: ⭐ Create tarball
-        run: tar cvf ft_libft.tar ft_libft
+      - name: ⭐ Update submodule
+        run: git submodule update --remote
 
-      - name: ⭐ Upload ft_libft.tar artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ft_libft
-          path: ft_libft.tar
-          retention-days: 1
-
-  test-ft_libft:
-    needs: prepare-ft_libft
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⭐ Download ft_libft.tar artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: ft_libft
-
-      - name: ⭐ Unpack ft_libft.tar
-        run: tar xvf ft_libft.tar
+      - name: 💬 Git status
+        run: |+
+          git status
 
       - name: 🔧 test ft_libft
-        run: make -C ft_libft
+        run: make
 
       - name: ✅ ft_libft push
-        run: cd ft_libft && git push
-
+        run: |+
+          git add rsc/helper
+          git commit -m "${{ github.event.inputs.commit_msg }}"
+          git status
