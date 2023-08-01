@@ -34,7 +34,6 @@ jobs:
     steps:
       - name: ⭐ Retrieve all repo
         run: |+
-          [ -d test ] && rm -rf test
           mkdir test && cd test
           git clone https://github.com/Pixailz/ft_libft
           rm -rf ft_libft/rsc/helper
@@ -56,12 +55,14 @@ jobs:
           git add rsc/helper
           git commit -m "${{ github.event.inputs.commit_msg }}"
           cd ../ft_ping
+          printf "ft_ping"
           rm -rf lib/ft_libft
           cp -r ../ft_libft lib/ft_libft
           cp -r {lib/ft_libft/,}rsc/helper
           git add lib/ft_libft rsc/helper
           git commit -m "${{ github.event.inputs.commit_msg }}"
           cd ../SupaBlank
+          printf "SupaMakefile"
           rm -rf lib/ft_libft
           cp -r ../ft_libft lib/ft_libft
           cp -r {lib/ft_libft/,}rsc/helper
