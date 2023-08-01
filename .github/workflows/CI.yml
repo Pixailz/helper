@@ -1,0 +1,114 @@
+name: CI/CD
+
+run-name: Update submodule CI/CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_msg:
+        required: true
+        description: "the commit message to spread"
+
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "💬 github"
+        run: |+
+          echo "Who launched: ${{ github.actor }}"
+          echo "On branch:    ${{ github.ref_name }}"
+          echo "Commit sha:   ${{ github.sha }}"
+
+      - name: "💬 Bin utils"
+        run: |+
+          make --version && echo
+          ar --version && echo
+          gcc --verbose && echo
+          python3 --version
+
+  test-ft_libft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⭐ Retrieve ft_libft
+        uses: actions/checkout@v2
+        with:
+          repository: "Pixailz/ft_libft"
+          submodules: recursive
+
+      - name: ⭐ Configure and update
+        run: |+
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git submodule update --remote
+
+      - name: 💬 Git status
+        run: |+
+          git status
+
+      - name: 🔧 test ft_libft
+        run: make
+
+      - name: ✅ ft_libft push
+        run: |+
+          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+          git push
+
+  # test-ft_ping:
+  #   needs: test-ft_libft
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: ⭐ Retrieve ft_ping
+  #       uses: actions/checkout@v2
+  #       with:
+  #         repository: "Pixailz/ft_ping"
+  #         submodules: recursive
+
+  #     - name: ⭐ Git commit
+  #       run: |+
+  #         git config --global user.name ${{ github.actor }}
+  #         git config --global user.email ${{ github.event.inputs.git_email }}
+
+  #     - name: ⭐ Update submodule
+  #       run: git submodule update --remote
+
+  #     - name: 💬 Git status
+  #       run: |+
+  #         git status
+
+  #     - name: 🔧 test ft_ping
+  #       run: make
+
+  #     - name: ✅ ft_ping push
+  #       run: |+
+  #         git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+  #         git push
+
+  # test-SupaBlank:
+  #   needs: test-ft_libft
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: ⭐ Retrieve SupaBlank
+  #       uses: actions/checkout@v2
+  #       with:
+  #         repository: "Pixailz/SupaBlank"
+  #         submodules: recursive
+
+  #     - name: ⭐ Git commit
+  #       run: |+
+  #         git config --global user.name ${{ github.actor }}
+  #         git config --global user.email ${{ github.event.inputs.git_email }}
+
+  #     - name: ⭐ Update submodule
+  #       run: git submodule update --remote
+
+  #     - name: 💬 Git status
+  #       run: |+
+  #         git status
+
+  #     - name: 🔧 test SupaBlank
+  #       run: make
+
+  #     - name: ✅ SupaBlank push
+  #       run: |+
+  #         git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+  #         git push
