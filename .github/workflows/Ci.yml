@@ -68,6 +68,7 @@ jobs:
           git commit -m "${{ github.event.inputs.commit_msg }}"
 
   test-ft_libft:
+    needs: prepare-test
     runs-on: ubuntu-latest
     steps:
       - name: 🔧 test ft_libft
@@ -81,6 +82,7 @@ jobs:
         run: cd test/ft_libft && git push
 
   test-ft_ping:
+    needs: prepare-test
     runs-on: ubuntu-latest
     steps:
       - name: 🔧 test ft_libft
@@ -94,6 +96,7 @@ jobs:
         run: cd test/ft_ping && git push
 
   test-SupaBlank:
+    needs: prepare-test
     runs-on: ubuntu-latest
     steps:
       - name: 🔧 test ft_libft
