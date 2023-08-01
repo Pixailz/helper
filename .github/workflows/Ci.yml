@@ -1,0 +1,42 @@
+name: CI
+
+run-name: Full helper CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'helper'
+      - 'modules/**/**.py'
+      - Makefile
+      - '**.mk'
+  pull_request:
+    types: [opened]
+
+jobs:
+  # info:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: "github"
+  #       run: |+
+  #         echo "Who launched: ${{github.actor}}"
+  #         echo "On branch:    ${{github.ref_name}}"
+  #         echo "Commit sha:   ${{github.sha}}"
+
+  #     - name: "Bin utils"
+  #       run: |+
+  #         make --version && echo
+  #         ar --version && echo
+  #         gcc --verbose && echo
+  #         python3 --version
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Retrieve ft_libft repo
+        uses: actions/checkout@v3
+        with:
+          repository: Pixailz/ft_lifbt
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: test
+        run: pwd
