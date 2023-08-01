@@ -29,82 +29,48 @@ jobs:
           gcc --verbose && echo
           python3 --version
 
-  prepare-test:
+  prepare-ft_libft:
     runs-on: ubuntu-latest
     steps:
-      - name: ⭐ Retrieve all repo
+      - name: ⭐ Retrieve ft_libft repo
         run: |+
-          mkdir test && cd test
           git clone https://github.com/Pixailz/ft_libft
           rm -rf ft_libft/rsc/helper
           git clone https://github.com/Pixailz/helper ft_libft/rsc/helper
-          git clone https://github.com/Pixailz/ft_ping
-          rm -rf ft_ping/{lib/ft_libft,rsc/helper}
-          cp -r {,ft_ping/lib/}ft_libft
-          cp -r ft_ping/{lib/ft_libft/rsc/helper,rsc/helper}
-          git clone https://github.com/Pixailz/SupaBlank
-          rm -rf SupaBlank/{lib/ft_libft,rsc/helper}
-          cp -r {,SupaBlank/lib/}ft_libft
-          cp -r SupaBlank/{lib/ft_libft/rsc/helper,rsc/helper}
+
+      - name: ⭐ Git commit
+        run: |+
           git config --global user.name ${{ github.actor }}
           git config --global user.email ${{ github.actor }}
-
-      - name: ⭐ Git commit all
-        run: |+
-          cd test/ft_libft
+          cd ft_libft
           git add rsc/helper
           git commit -m "${{ github.event.inputs.commit_msg }}"
-          cd ../ft_ping
-          rm -rf lib/ft_libft rsc/helper
-          cp -r ../ft_libft lib/ft_libft
-          cp -r {lib/ft_libft/,}rsc/helper
-          git add lib/ft_libft rsc/helper
-          git commit -m "${{ github.event.inputs.commit_msg }}"
-          cd ../SupaBlank
-          rm -rf lib/ft_libft rsc/helper
-          cp -r ../ft_libft lib/ft_libft
-          cp -r {lib/ft_libft/,}rsc/helper
-          git add lib/ft_libft rsc/helper
-          git commit -m "${{ github.event.inputs.commit_msg }}"
+
+      - name: ⭐ Create tarball
+        run: tar cvf ft_libft.tar ft_libft
+
+      - name: ⭐ Upload ft_libft.tar artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ft_libft
+          path: ft_libft.tar
+          retention-days: 1
 
   test-ft_libft:
-    needs: prepare-test
+    needs: prepare-ft_libft
     runs-on: ubuntu-latest
     steps:
-      - name: 🔧 test ft_libft
-        run: make -C test/ft_libft
+      - name: ⭐ Download ft_libft.tar artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ft_libft
 
-  push-ft_libft:
-    needs: test-ft_libft
-    runs-on: ubuntu-latest
-    steps:
+      - name: ⭐ Unpack ft_libft.tar
+        run: tar xvf ft_libft.tar
+
+      - name: 🔧 test ft_libft
+        run: make -C ft_libft
+
       - name: ✅ ft_libft push
-        run: cd test/ft_libft && git push
+        run: cd ft_libft && git push
 
-  test-ft_ping:
-    needs: prepare-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🔧 test ft_libft
-        run: make -C test/ft_ping
-
-  push-ft_ping:
-    needs: test-ft_ping
-    runs-on: ubuntu-latest
-    steps:
-      - name: ✅ ft_ping push
-        run: cd test/ft_ping && git push
-
-  test-SupaBlank:
-    needs: prepare-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🔧 test ft_libft
-        run: make -C test/SupaBlank
-
-  push-SupaBlank:
-    needs: test-SupaBlank
-    runs-on: ubuntu-latest
-    steps:
-      - name: ✅ SupaBlank push
-        run: cd test/SupaBlank && git push
