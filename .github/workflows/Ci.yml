@@ -47,13 +47,13 @@ jobs:
 
       - name: intermediary step
         run:
-          pwd && ls -laR ..
+          pwd
 
       - name: test ft_libft
-        run: make -C ft_libft
+        run: make -C test/ft_libft
 
       - name: test ft_libft
-        run: make -C ft_ping
+        run: make -C test/ft_ping
 
       - name: test ft_libft
-        run: make -C SupaBlank
+        run: make -C test/SupaBlank
