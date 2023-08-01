@@ -57,7 +57,7 @@ jobs:
       - name: ✅ ft_libft push
         run: |+
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
-          git remote set-url --push origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}/Pixailz/ft_libft
+          git remote set-url --push origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Pixailz/ft_libft
           git push
 
   # test-ft_ping:
