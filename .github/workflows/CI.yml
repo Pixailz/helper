@@ -24,6 +24,8 @@ jobs:
 
   test-ft_libft:
     uses: Pixailz/ft_libft/.github/workflows/CI.yml@main
+    with:
+      is_called: true
 
   update-ft_libft:
     needs: test-ft_libft
