@@ -44,7 +44,7 @@ jobs:
           git status
 
       - name: 🔧 Local ft_libft CI call
-        uses: ./.github/workflows/CI.yml
+        uses: Pixailz/ft_libft/.github/workflows/CI.yml
 
       - name: ☁️ ft_libft push
         run: git status && git push
