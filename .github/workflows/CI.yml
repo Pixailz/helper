@@ -26,81 +26,81 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ☁️ Retrieve ft_libft repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: "Pixailz/ft_libft"
           submodules: recursive
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.PAT_ACTIONS }}
 
       - name: ☁️ Configure and update
         run: |+
           git config user.name github-actions
           git config user.email github-actions@github.com
           git submodule update --remote --recursive
-          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+          git commit -a -m "[helper] submodule update spread"
 
       - name: 💬 Git status
         run: |+
           git status
 
-      - name: 🔧 test ft_libft
-        run: make
+      - name: 🔧 Local ft_libft CI call
+        uses: ./.github/workflows/CI.yml
 
       - name: ☁️ ft_libft push
         run: git status && git push
 
-  test-ft_ping:
-    needs: test-ft_libft
-    runs-on: ubuntu-latest
-    steps:
-      - name: ☁️ Retrieve ft_ping
-        uses: actions/checkout@v2
-        with:
-          repository: "Pixailz/ft_ping"
-          submodules: recursive
-          token: ${{ secrets.PAT_ACTIONS }}
+  # test-ft_ping:
+  #   needs: test-ft_libft
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: ☁️ Retrieve ft_ping
+  #       uses: actions/checkout@v3
+  #       with:
+  #         repository: "Pixailz/ft_ping"
+  #         submodules: recursive
+  #         token: ${{ secrets.PAT_ACTIONS }}
 
-      - name: ☁️ Configure and update
-        run: |+
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git submodule update --remote --recursive
-          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+  #     - name: ☁️ Configure and update
+  #       run: |+
+  #         git config user.name github-actions
+  #         git config user.email github-actions@github.com
+  #         git submodule update --remote --recursive
+  #         git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
 
-      - name: 💬 Git status
-        run: |+
-          git status
+  #     - name: 💬 Git status
+  #       run: |+
+  #         git status
 
-      - name: 🔧 test ft_ping
-        run: make
+  #     - name: 🔧 test ft_ping
+  #       run: make
 
-      - name: ☁️ ft_ping push
-        run: git status && git push
+  #     - name: ☁️ ft_ping push
+  #       run: git status && git push
 
-  test-SupaBlank:
-    needs: test-ft_libft
-    runs-on: ubuntu-latest
-    steps:
-      - name: ☁️ Retrieve SupaBlank repo
-        uses: actions/checkout@v2
-        with:
-          repository: "Pixailz/SupaBlank"
-          submodules: recursive
-          token: ${{ secrets.PAT_ACTIONS }}
+  # test-SupaBlank:
+  #   needs: test-ft_libft
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: ☁️ Retrieve SupaBlank repo
+  #       uses: actions/checkout@v3
+  #       with:
+  #         repository: "Pixailz/SupaBlank"
+  #         submodules: recursive
+  #         token: ${{ secrets.PAT_ACTIONS }}
 
-      - name: ☁️ Configure and update
-        run: |+
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git submodule update --remote --recursive
-          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+  #     - name: ☁️ Configure and update
+  #       run: |+
+  #         git config user.name github-actions
+  #         git config user.email github-actions@github.com
+  #         git submodule update --remote --recursive
+  #         git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
 
-      - name: 💬 Git status
-        run: |+
-          git status
+  #     - name: 💬 Git status
+  #       run: |+
+  #         git status
 
-      - name: 🔧 test SupaBlank
-        run: make
+  #     - name: 🔧 test SupaBlank
+  #       run: make
 
-      - name: ☁️ SupaBlank push
-        run: git status && git push
+  #     - name: ☁️ SupaBlank push
+  #       run: git status && git push
