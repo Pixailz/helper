@@ -23,6 +23,10 @@ jobs:
           python3 --version
 
   test-ft_libft:
+    uses: Pixailz/ft_libft/.github/workflows/CI.yml@main
+
+  update-ft_libft:
+    needs: test-ft_libft
     runs-on: ubuntu-latest
     steps:
       - name: ☁️ Retrieve ft_libft repo
@@ -38,16 +42,7 @@ jobs:
           git config user.email github-actions@github.com
           git submodule update --remote --recursive
           git commit -a -m "[helper] submodule update spread"
-
-      - name: 💬 Git status
-        run: |+
-          git status
-
-      - name: 🔧 Local ft_libft CI call
-        uses: Pixailz/ft_libft/.github/workflows/CI.yml@main
-
-      - name: ☁️ ft_libft push
-        run: git status && git push
+          git status && git push
 
   # test-ft_ping:
   #   needs: test-ft_libft
