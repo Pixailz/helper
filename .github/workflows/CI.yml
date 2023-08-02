@@ -3,17 +3,7 @@ name: CI/CD
 run-name: Update submodule CI/CD
 
 on:
-  workflow_dispatch:
-    inputs:
-      commit_msg:
-        required: true
-        description: "⭐ the commit message to spread"
-      git_email:
-        required: true
-        description: "⭐ the email of the commit"
-
-permissions:
-  contents: write
+  workflow_dispatch
 
 jobs:
   info:
@@ -35,17 +25,17 @@ jobs:
   test-ft_libft:
     runs-on: ubuntu-latest
     steps:
-      - name: ⭐ Retrieve ft_libft
+      - name: ☁️ Retrieve ft_libft repo
         uses: actions/checkout@v2
         with:
           repository: "Pixailz/ft_libft"
           submodules: recursive
-          token: ${{ secrets.PAT_ACTIONS }}
+          token: ${{ secrets.PAT_TOKEN }}
 
-      - name: ⭐ Configure and update
+      - name: ☁️ Configure and update
         run: |+
-          git config user.name ${{ github.actor }}
-          git config user.email ${{ github.event.inputs.git_email }}
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git submodule update --remote --recursive
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
 
@@ -56,23 +46,24 @@ jobs:
       - name: 🔧 test ft_libft
         run: make
 
-      - name: ✅ ft_libft push
+      - name: ☁️ ft_libft push
         run: git status && git push
 
   test-ft_ping:
+    needs: test-ft_libft
     runs-on: ubuntu-latest
     steps:
-      - name: ⭐ Retrieve ft_ping
+      - name: ☁️ Retrieve ft_ping
         uses: actions/checkout@v2
         with:
           repository: "Pixailz/ft_ping"
           submodules: recursive
           token: ${{ secrets.PAT_ACTIONS }}
 
-      - name: ⭐ Configure and update
+      - name: ☁️ Configure and update
         run: |+
-          git config user.name ${{ github.actor }}
-          git config user.email ${{ github.event.inputs.git_email }}
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git submodule update --remote --recursive
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
 
@@ -83,23 +74,24 @@ jobs:
       - name: 🔧 test ft_ping
         run: make
 
-      - name: ✅ ft_ping push
+      - name: ☁️ ft_ping push
         run: git status && git push
 
   test-SupaBlank:
+    needs: test-ft_libft
     runs-on: ubuntu-latest
     steps:
-      - name: ⭐ Retrieve SupaBlank
+      - name: ☁️ Retrieve SupaBlank repo
         uses: actions/checkout@v2
         with:
           repository: "Pixailz/SupaBlank"
           submodules: recursive
           token: ${{ secrets.PAT_ACTIONS }}
 
-      - name: ⭐ Configure and update
+      - name: ☁️ Configure and update
         run: |+
-          git config user.name ${{ github.actor }}
-          git config user.email ${{ github.event.inputs.git_email }}
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git submodule update --remote --recursive
           git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
 
@@ -110,5 +102,5 @@ jobs:
       - name: 🔧 test SupaBlank
         run: make
 
-      - name: ✅ SupaBlank push
+      - name: ☁️ SupaBlank push
         run: git status && git push
