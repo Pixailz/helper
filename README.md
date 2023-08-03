@@ -1,5 +1,7 @@
 # helper
 
+[![CI/CD](https://github.com/Pixailz/helper/actions/workflows/CI.yml/badge.svg)](https://github.com/Pixailz/helper/actions/workflows/CI.yml)
+
 Helper to make life easier, and effiency btw
 
 ## TODO
