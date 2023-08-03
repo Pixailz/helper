@@ -62,7 +62,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git submodule update --remote --recursive
-          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+          git commit -a -m "[helper] submodule update spread"
 
       - name: 💬 Git status
         run: |+
@@ -90,7 +90,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git submodule update --remote --recursive
-          git commit -a -m "[helper:update] ${{ github.event.inputs.commit_msg }}"
+          git commit -a -m "[helper] submodule update spread"
 
       - name: 💬 Git status
         run: |+
