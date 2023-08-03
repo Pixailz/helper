@@ -38,6 +38,9 @@ jobs:
           submodules: recursive
           token: ${{ secrets.PAT_ACTIONS }}
 
+      - name: 🔧 Update file with helper
+        run: make helper
+
       - name: ☁️ Configure and update
         run: |+
           git config user.name 'github-actions[bot]'
@@ -57,6 +60,9 @@ jobs:
           submodules: recursive
           token: ${{ secrets.PAT_ACTIONS }}
 
+      - name: 🔧 test ft_ping
+        run: make
+
       - name: ☁️ Configure and update
         run: |+
           git config user.name 'github-actions[bot]'
@@ -67,9 +73,6 @@ jobs:
       - name: 💬 Git status
         run: |+
           git status
-
-      - name: 🔧 test ft_ping
-        run: make
 
       - name: ☁️ ft_ping push
         run: git status && git push
@@ -85,6 +88,9 @@ jobs:
           submodules: recursive
           token: ${{ secrets.PAT_ACTIONS }}
 
+      - name: 🔧 test SupaBlank
+        run: make
+
       - name: ☁️ Configure and update
         run: |+
           git config user.name 'github-actions[bot]'
@@ -95,9 +101,6 @@ jobs:
       - name: 💬 Git status
         run: |+
           git status
-
-      - name: 🔧 test SupaBlank
-        run: make
 
       - name: ☁️ SupaBlank push
         run: git status && git push
