@@ -38,14 +38,17 @@ jobs:
           submodules: recursive
           token: ${{ secrets.PAT_ACTIONS }}
 
+      - name: ☁️ Update submodules
+        run: |+
+          git submodule update --remote --recursive
+
       - name: 🔧 Update file with helper
         run: make helper
 
-      - name: ☁️ Configure and update
+      - name: ☁️ Configure, commit and push
         run: |+
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git submodule update --remote --recursive
           git commit -a -m "[helper] submodule update spread"
           git status && git push
 
@@ -60,14 +63,17 @@ jobs:
           submodules: recursive
           token: ${{ secrets.PAT_ACTIONS }}
 
+      - name: ☁️ Update submodules
+        run: |+
+          git submodule update --remote --recursive
+
       - name: 🔧 test ft_ping
         run: make
 
-      - name: ☁️ Configure and update
+      - name: ☁️ Configure and commit
         run: |+
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git submodule update --remote --recursive
           git commit -a -m "[helper] submodule update spread"
 
       - name: 💬 Git status
@@ -88,14 +94,17 @@ jobs:
           submodules: recursive
           token: ${{ secrets.PAT_ACTIONS }}
 
+      - name: ☁️ Update submodules
+        run: |+
+          git submodule update --remote --recursive
+
       - name: 🔧 test SupaBlank
         run: make
 
-      - name: ☁️ Configure and update
+      - name: ☁️ Configure and commit
         run: |+
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git submodule update --remote --recursive
           git commit -a -m "[helper] submodule update spread"
 
       - name: 💬 Git status
