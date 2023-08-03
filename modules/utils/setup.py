@@ -96,28 +96,20 @@ class Setup():
 		header.update_include()
 
 	def	__init__(self):
-		self.git_config = os.path.join(os.path.join(CWD, '.git'), "config")
+		self.setup_name = os.getenv("HELPER_SETUP_NAME")
 
 	def	launch(self):
 		log.print("Executing helper (setup)", p.INFO, 1)
-		if not os.path.isfile(self.git_config):
-			log.print(f"[{self.git_config}] not found", p.FAILURE)
+		if not self.setup_name:
+			log.print(f"HELPER_SETUP_NAME variable not found", p.FAILURE)
 			return
-		with open(self.git_config, 'r') as f:
-			git_config_str = f.read()
-		founded = reg.get_git_name.findall(git_config_str)
-		if not len(founded[0]):
-			log.print(f"repo name not found in [{self.git_config}]", p.FAILURE)
-			return
-		log.print(f"repo name found [{a.CYAN}{founded[0][1]}{a.RST}]", p.SUCCESS)
-		func = None
 		for item in dir(Setup):
-			if item == founded[0][1]:
+			if item == self.setup_name:
 				func = item
 		if not func:
-			log.print(f"{founded[0][1]} not implemented yet", p.FAILURE)
+			log.print(f"[{self.setup_name}] not implemented yet", p.FAILURE)
 			return
 		getattr(Setup, func)()
-		log.print(f"successfully executed [{a.GREEN}{func}{a.RST}]", p.SUCCESS)
+		log.print(f"Successfully executed [{a.GREEN}{func}{a.RST}]", p.SUCCESS)
 
 setup = Setup()
