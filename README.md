@@ -10,10 +10,11 @@ Helper to make life easier, and effiency btw
 	- commented section of code with `/**/`
 	- causing to add those prototype even "if there is not here"
 1. write usage
+1. integrate [Cult Of the Norm](https://github.com/Pixailz/Cult-Of-the-Norm)
 
 ## requirements.txt
 
-> to output required package to requirements.txt
+> to output required pac****kage to requirements.txt
 
 ```bash
 pip install pipreqs
