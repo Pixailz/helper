@@ -1,0 +1,23 @@
+{
+	"sys/wait.h": [
+		"wait",
+		"wait3",
+		"wait4",
+		"waitid",
+		"waitpid",
+		"WNOHANG",
+		"WUNTRACED",
+		"WEXITSTATUS",
+		"WIFCONTINUED",
+		"WIFEXITED",
+		"WIFSIGNALED",
+		"WIFSTOPPED",
+		"WSTOPSIG",
+		"WTERMSIG",
+		"WEXITED",
+		"WSTOPPED",
+		"WCONTINUED",
+		"WNOHANG",
+		"WNOWAIT"
+	]
+}
