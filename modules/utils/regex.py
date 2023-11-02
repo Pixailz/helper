@@ -12,7 +12,7 @@ class	RegexFinder():
 		self.get_git_name = re.compile( re_git_name, re.S | re.M)
 
 	def	re_c(self) -> None:
-		self.get_src_header = re.compile( r'^// [\w/]*?\.c$.*?;$\n\n', re.S | re.M)
+		self.get_src_header = re.compile( r'^// [\w/.]*?\.c$.*?;$\n\n', re.S | re.M)
 		self.c_define = re.compile(r'^#\s*define\s+(\w+)', re.S | re.M)
 		self.c_typedef = re.compile(r'typedef.*?(\w+);$', re.S | re.M)
 		c_header_begin = r'#\s*include '
