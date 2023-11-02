@@ -6,12 +6,6 @@ class Setup():
 		src_dir = "src"
 		inc_dir = "inc"
 
-		# Norminette
-		check_norminette([
-			src_dir,
-			*get_file(f"{inc_dir}/*.h", [f"{inc_dir}/libft_print.h"])
-		])
-
 		# Makefile
 		config = {
 			"makefile":		"mk/srcs.mk",
@@ -59,9 +53,6 @@ class Setup():
 
 	@staticmethod
 	def	ft_ping():
-		# Norminette
-		check_norminette()
-
 		# Mandatory
 		inc_dir = "inc"
 		src_dir = "src/mandatory"
@@ -88,9 +79,6 @@ class Setup():
 
 	@staticmethod
 	def	SupaBlank():
-		# Norminette
-		check_norminette()
-
 		# Mandatory
 		inc_dir = "inc"
 		src_dir = "src/mandatory"

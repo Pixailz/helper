@@ -33,7 +33,5 @@ from modules.prototype import Prototype
 from modules.makefile import Makefile
 from modules.header import Header
 
-from modules.norminette import check_norminette
-
 # SETUP
 from modules.utils.setup import setup
