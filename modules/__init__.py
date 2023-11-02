@@ -6,8 +6,6 @@ import glob
 import inspect
 import subprocess
 
-import norminette
-
 CWD = os.getcwd()
 """
 -1  all
