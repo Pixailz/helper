@@ -10,7 +10,7 @@ class Setup():
 
 	def	launch(self):
 		if not self.setup_name:
-			log.print(f"HELPER_SETUP_NAME variable not found", p.FAILURE)
+			log.print("HELPER_SETUP_NAME variable not found", p.FAILURE)
 			return
 		log.print(f"Executing setup ({a.YELLOW}{self.setup_name}{a.RST})", p.INFO, 1)
 		if self.setup_name not in self.config:

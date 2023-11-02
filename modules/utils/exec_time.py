@@ -11,4 +11,4 @@ def	print_elapsed(title: str, begin, end) -> None:
 	elapsed_time *= 1_000
 	elapsed_str += str(round(elapsed_time, 3)) + a.RST
 	log.print(f"Module {a.YELLOW}{title}{a.RST} "
-			  f"took {elapsed_str}ms", p.INFO)
+			  f"took {elapsed_str} ms", p.INFO)
