@@ -19,7 +19,7 @@ class	a():
 	CYAN	= f"{ESC}[36m"
 	WHITE	= f"{ESC}[37m"
 
-	RST		= f"{ESC}[00m"
+	RST		= f"{ESC}[0m"
 
 	SEP		= f"{RED}|{RST}"
 

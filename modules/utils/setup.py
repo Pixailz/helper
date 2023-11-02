@@ -34,8 +34,10 @@ class Setup():
 					case "makefile": module_func = self.do_setup_makefile
 					case "prototype": module_func = self.do_setup_prototype
 					case "header": module_func = self.do_setup_header
-
+				begin = time.time()
 				module_func(data[module])
+				end = time.time()
+				print_elapsed(module, begin, end)
 
 	def	do_setup_makefile(self, data: any) -> None:
 		makefile = Makefile(
