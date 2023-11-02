@@ -27,6 +27,7 @@ class Prototype():
 							for item in
 							reg.get_src_header.sub('', header_str).split('\n') ]
 		self.header_str[len(self.header_str) - 1] = self.header_str[len(self.header_str) - 1].removesuffix('\n')
+
 	def	get_proto_file(self, src_path):
 		src_id = src_path.removeprefix(self.src_dir + '/')
 		with open(src_path, 'r') as f:

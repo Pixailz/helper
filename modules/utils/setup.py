@@ -4,9 +4,18 @@ class Setup():
 	@staticmethod
 	def ft_libft():
 		src_dir = "src"
+		inc_dir = "inc"
+
+		# Norminette
+		check_norminette([
+			src_dir,
+			*get_file(f"{inc_dir}/*.h", [f"{inc_dir}/libft_print.h"])
+		])
+
+		# Makefile
 		config = {
 			"makefile":		"mk/srcs.mk",
-			"src_dir":		src_dir
+			"src_dir":		src_dir,
 		}
 		makefile = Makefile(**config)
 		makefile.add_var("SRC_INT", "integer")
@@ -24,29 +33,39 @@ class Setup():
 		makefile.add_var("SRC_UNI_TEST", "unit_test")
 		makefile.update_makefile()
 
+		# Prototype
 		config = {
-			"inc_dir":	"inc",
-			"src_dir":	src_dir
+			"inc_dir":	inc_dir,
+			"src_dir":	src_dir,
 		}
-		header = Prototype(**config)
-		header.add_header("libft_integer.h", "integer")
-		header.add_header("libft_string.h", "string")
-		header.add_header("libft_memory.h", "memory")
-		header.add_header("libft_parsing.h", "parsing")
-		header.add_header("libft_error.h", "error")
-		header.add_header("libft_check.h", "check")
-		header.add_header("libft_list.h", "list")
-		header.add_header("libft_print.h", "print")
-		header.add_header("libft_input.h", "input")
-		header.add_header("libft_random.h", "random")
-		header.add_header("libft_linux.h", "linux")
-		header.add_header("libft_network/ipv4.h", "network/ipv4")
-		header.add_header("libft_unit_test.h", "unit_test")
-		header.update_include()
+		prototype = Prototype(**config)
+		prototype.add_header("libft_integer.h", "integer")
+		prototype.add_header("libft_string.h", "string")
+		prototype.add_header("libft_memory.h", "memory")
+		prototype.add_header("libft_parsing.h", "parsing")
+		prototype.add_header("libft_error.h", "error")
+		prototype.add_header("libft_check.h", "check")
+		prototype.add_header("libft_list.h", "list")
+		prototype.add_header("libft_print.h", "print")
+		prototype.add_header("libft_input.h", "input")
+		prototype.add_header("libft_random.h", "random")
+		prototype.add_header("libft_linux.h", "linux")
+		prototype.add_header("libft_network/ipv4.h", "network/ipv4")
+		prototype.add_header("libft_unit_test.h", "unit_test")
+		prototype.update_include()
+
+		# Header
+		header = Header(**config)
 
 	@staticmethod
 	def	ft_ping():
+		# Norminette
+		check_norminette()
+
+		# Mandatory
+		inc_dir = "inc"
 		src_dir = "src/mandatory"
+		#  Makefile
 		config = {
 			"makefile":		"mk/srcs.mk",
 			"src_dir":		src_dir
@@ -55,17 +74,27 @@ class Setup():
 		makefile.add_var("SRC_C_MANDATORY")
 		makefile.update_makefile()
 
+		#  Prototype
 		config = {
-			"inc_dir":	"inc",
+			"inc_dir":	inc_dir,
 			"src_dir":	src_dir
 		}
-		header = Prototype(**config)
-		header.add_header("ft_ping.h")
-		header.update_include()
+		prototype = Prototype(**config)
+		prototype.add_header("ft_ping.h")
+		prototype.update_include()
+
+		#  Header
+		header = Header(**config)
 
 	@staticmethod
 	def	SupaBlank():
+		# Norminette
+		check_norminette()
+
+		# Mandatory
+		inc_dir = "inc"
 		src_dir = "src/mandatory"
+		#  Makefile
 		config = {
 			"makefile":		"mk/srcs.mk",
 			"src_dir":		src_dir
@@ -74,15 +103,22 @@ class Setup():
 		makefile.add_var("SRC_C_MANDATORY")
 		makefile.update_makefile()
 
+		#  Prototype
 		config = {
-			"inc_dir":	"inc",
+			"inc_dir":	inc_dir,
 			"src_dir":	src_dir
 		}
-		header = Prototype(**config)
-		header.add_header("template.h")
-		header.update_include()
 
+		prototype = Prototype(**config)
+		prototype.add_header("template.h")
+		prototype.update_include()
+
+		#  Header
+		header = Header(**config)
+
+		# Bonus
 		src_dir = "src/bonus"
+		#  Makefile
 		config = {
 			"makefile":		"mk/srcs.mk",
 			"src_dir":		src_dir
@@ -91,13 +127,17 @@ class Setup():
 		makefile.add_var("SRC_C_BONUS")
 		makefile.update_makefile()
 
+		#  Prototype
 		config = {
-			"inc_dir":	"inc",
+			"inc_dir":	inc_dir,
 			"src_dir":	src_dir
 		}
-		header = Prototype(**config)
-		header.add_header("template_bonus.h")
-		header.update_include()
+		prototype = Prototype(**config)
+		prototype.add_header("template_bonus.h")
+		prototype.update_include()
+
+		#  Header
+		header = Header(**config)
 
 	def	__init__(self):
 		self.setup_name = os.getenv("HELPER_SETUP_NAME")

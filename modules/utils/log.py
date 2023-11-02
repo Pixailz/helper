@@ -19,8 +19,9 @@ class	a():
 	CYAN	= f"{ESC}[36m"
 	WHITE	= f"{ESC}[37m"
 
-	SEP		= " → "
 	RST		= f"{ESC}[00m"
+
+	SEP		= f"{RED}|{RST}"
 
 class Log():
 
@@ -58,5 +59,3 @@ class Log():
 		print(header + a.SEP + msg)
 
 log = Log()
-
-
