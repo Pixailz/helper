@@ -289,15 +289,19 @@ class Header():
 			return {}
 		except ValueError:
 			pass
-		if len(self.recursion_lvl) > self.max_recursion:
-			print(f"{self.max_recursion} {len(self.recursion_lvl)}")
-			# return {}
-		self.recursion_lvl.append(header_name)
-		# self.print_recursion_lvl()
+
 
 		header_path = self.get_path_header(header_name)
-		# if not header_path or self.h_tree_files[header_path]: return {}
 		if not header_path: return {}
+
+		if len(self.recursion_lvl) > self.max_recursion:
+			log.print(
+				f"exceeded recursion, MAX"
+				f"{self.max_recursion},CUR{len(self.recursion_lvl)}",
+				p.WARN)
+			return {}
+		self.recursion_lvl.append(header_name)
+		# self.print_recursion_lvl()
 
 		current_content: dict = {}
 
