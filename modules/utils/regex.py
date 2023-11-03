@@ -21,7 +21,7 @@ class	RegexFinder():
 		self.c_enum_values = re.compile(r'enum\s+\w+?\s+?{\s+(\w.*?),?\s*}', re.S | re.M)
 		self.c_enum_value = re.compile(r'\s*?(\w+).*?$', re.S | re.M)
 		self.c_enum_name = re.compile(r'enum\s+(\w+)', re.S | re.M)
-		self.c_inc_dir = re.compile(
+		self.c_compiler_inc = re.compile(
 			r'<\.\.\.> search starts here:\n(.*?)End of search list\.$',
 			re.S | re.M
 		)

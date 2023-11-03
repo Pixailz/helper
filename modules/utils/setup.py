@@ -8,6 +8,28 @@ class Setup():
 			setup_json = f.read()
 		self.config = json.loads(setup_json)
 
+	def	print_elapsed(self, title):
+		elapsed = timer.elapsed()
+		elapsed /= 1000
+		warning = False
+		if elapsed > .75 * 1_000_000:
+			elapsed_str = a.RED
+			warning = True
+		elif elapsed > .25 * 1_000_000:
+			elapsed_str = a.YELLOW
+			warning = True
+		else:
+			elapsed_str = a.GREEN
+
+		elapsed_str += str(round(elapsed, 3)) + a.RST
+
+		if warning:
+			log.print(f"Module {a.YELLOW}{title}{a.RST} "
+				f"took {elapsed_str} ms", p.WARN)
+		else:
+			log.print(f"Module {a.YELLOW}{title}{a.RST} "
+				f"took {elapsed_str} ms", p.INFO)
+
 	def	launch(self):
 		if not self.setup_name:
 			log.print("HELPER_SETUP_NAME variable not found", p.FAILURE)
@@ -34,10 +56,10 @@ class Setup():
 					case "makefile": module_func = self.do_setup_makefile
 					case "prototype": module_func = self.do_setup_prototype
 					case "header": module_func = self.do_setup_header
-				begin = time.time()
+				timer.begin()
 				module_func(data[module])
-				end = time.time()
-				print_elapsed(module, begin, end)
+				timer.end()
+				self.print_elapsed(module)
 
 	def	do_setup_makefile(self, data: any) -> None:
 		makefile = Makefile(

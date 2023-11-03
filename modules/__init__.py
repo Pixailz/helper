@@ -28,7 +28,7 @@ from modules.utils.regex import reg
 	# GLOB
 from modules.utils.glob import get_file
 	# EXEC TIME
-from modules.utils.exec_time import print_elapsed
+from modules.utils.exec_time import timer, TimerMode
 
 # MAIN MODULES
 from modules.prototype import Prototype
