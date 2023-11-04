@@ -1,5 +1,12 @@
 from modules import *
 
+BLACK_LISTED_WORD = [
+	"return",
+	"while"
+	"if"
+	"else"
+]
+
 class Header():
 	def	__init__(self,
 			inc_dir: str,
@@ -8,47 +15,20 @@ class Header():
 			max_recursion: int			= 10,
 		):
 		self.inc_dir: str = os.path.join(CWD, inc_dir)
-		self.src_dir: str = src_dir
-
+		self.src_dir: str = os.path.join(CWD, src_dir)
 		self.c_files: dict[any] = {}
-		self.h_tree_files: dict[any] = {}
+		self.h_files: dict[any] = {}
 
-		self.recursion_lvl: list[str] = []
+		self.lib_dir = []
+		self.get_lib_dir()
 
 		self.max_recursion = max_recursion
-		self.lib_dir = self.get_lib_dir()
+		self.recursion_lvl: list[str] = []
 
 		self.reset_stats()
 		self.populate_files(excluded_files)
-		self.update_header_tree()
-		self.print_data()
-		self.clean_header_tree()
 
-	def	get_lib_dir(self):
-		result = []
-		io = reg.c_inc_dir.findall(
-			subprocess.run(
-				["echo | clang -xc -E -v -"],
-				shell=True,
-				capture_output=True,
-			).stderr.decode("utf-8")
-		)
-		if len(io):
-			for item in io[0].split('\n'):
-				if len(item):
-					result.append(item.removeprefix(" "))
-		io = reg.c_inc_dir.findall(
-			subprocess.run(
-				["echo | gcc -xc -E -v -"],
-				shell=True,
-				capture_output=True,
-			).stderr.decode("utf-8")
-		)
-		if len(io):
-			for item in io[0].split('\n'):
-				if len(item):
-					result.append(item.removeprefix(" "))
-		return (sorted(set(result), reverse=True))
+		self.get_unused_header()
 
 	def	reset_stats(self):
 		self.stats_prefix = "nb_symbols_"
@@ -68,63 +48,31 @@ class Header():
 		self.nb_symbols_c_files = 0
 		self.nb_symbols_h_files = 0
 
-	def	print_stats(self, title: str):
-		log.print(title, p.SUCCESS)
-		log.print(f"  function: {self.nb_symbols_function}", p.INFO)
-		log.print(f"  define:   {self.nb_symbols_define}", p.INFO)
-		log.print(f"  typedef:  {self.nb_symbols_typedef}", p.INFO)
-		log.print(f"  enum:     {self.nb_symbols_enum}", p.INFO)
-		log.print(f"in", p.SUCCESS)
-		log.print(f"  c file:   {self.nb_symbols_c_files}", p.INFO)
-		log.print(f"  h file:   {self.nb_symbols_h_files}", p.INFO)
+	def	get_path(self, key) -> str:
+		to_check = [
+			self.src_dir,
+			self.inc_dir,
+			*self.lib_dir,
+		]
 
-	def	print_data(self, include: list[str] = []):
-		if not len(include):
-			for file in self.c_files:
-				log.print(f" C {file}", p.DEBUG, 1)
-				for value in self.c_files[file]:
-					log.print(" C   " + value, p.DEBUG, 2)
-			for file in self.h_tree_files:
-				log.print(f" H {file}", p.DEBUG, 1)
-				for key in self.h_tree_files[file].keys():
-					log.print(f" H   - {key}:", p.DEBUG, 2)
-					for value in self.h_tree_files[file][key]:
-						log.print(" H     - " + value, p.DEBUG, 3)
-		else:
-			for file in include:
-				tmp_key_c = self.get_c_key(file)
-				tmp_key_header = self.get_path_header(file)
-
-				if tmp_key_c in self.c_files.keys():
-					log.print(f" C {file}", p.DEBUG, 1)
-					for value in self.c_files[file]:
-						log.print(" C   " + value, p.DEBUG, 2)
-				elif tmp_key_header in self.h_tree_files:
-					log.print(f" H {tmp_key_header}", p.DEBUG, 1)
-					for key in self.h_tree_files[tmp_key_header].keys():
-						log.print(f" H   - {key}", p.DEBUG, 2)
-						for value in self.h_tree_files[tmp_key_header][key]:
-							log.print(" H     - " + value, p.DEBUG, 3)
-				else:
-					log.print(f"[E] {file} not found", p.DEBUG, 1)
-					log.print(f"[E]   {tmp_key_c=}", p.DEBUG, 2)
-					log.print(f"[E]   {tmp_key_header=}", p.DEBUG, 2)
-
-	def	get_c_key(self, c_file: str) -> None:
-		if c_file[:len(self.src_dir)] == self.src_dir:
-			return(c_file.removeprefix(self.src_dir + '/'))
-		else:
-			return (c_file)
-
-	def	get_path_header(self, header) -> str:
-		header_path = os.path.join(self.inc_dir, header)
-		if os.path.isfile(header_path):
-			return (header_path)
-		for lib_dir in self.lib_dir:
-			header_path = os.path.join(lib_dir, header)
-			if os.path.isfile(header_path):
-				return (header_path)
+		for lib_dir in to_check:
+			path = os.path.join(lib_dir, key)
+			if os.path.isfile(path):
+				return (path)
 		return (None)
+
+	def	get_key(self, path) -> str:
+		to_check = [
+			self.src_dir,
+			self.inc_dir,
+			*self.lib_dir,
+		]
+
+		for lib_dir in to_check:
+			id_lib_dir = lib_dir + '/'
+			if path[:len(id_lib_dir)] == id_lib_dir:
+				return path.removeprefix(id_lib_dir)
+		return (path)
 
 	def	update_data(
 			self,
@@ -177,12 +125,73 @@ class Header():
 					primary_key: value,
 				})
 
-	def	print_recursion_lvl(self):
-		tmp_lvl = 1
-		log.print(f"rec lvl {len(self.recursion_lvl)}", p.SUCCESS, 1)
-		for lvl in self.recursion_lvl:
-			log.print(f"  {tmp_lvl}. {lvl}", p.INFO, 2)
-			tmp_lvl += 1
+	def	get_lib_compiler(self, compiler: str) -> None:
+		io = reg.c_compiler_inc.findall(
+			subprocess.run(
+				["echo | clang -xc -E -v -"],
+				shell=True,
+				capture_output=True,
+			).stderr.decode("utf-8")
+		)
+		if len(io):
+			for item in io[0].split('\n'):
+				if len(item):
+					self.lib_dir.append(item.removeprefix(" "))
+
+	def	get_lib_dir(self) -> None:
+		self.get_lib_compiler("gcc")
+		self.get_lib_compiler("clang")
+		self.lib_dir = sorted(set(self.lib_dir), reverse=True)
+		return ()
+
+	def	populate_files(self, excluded_files: list[str] = []) -> None:
+		files = get_file(f"{self.src_dir}/**/*.c", excluded_files)
+		self.nb_symbols_c_files += len(files)
+		for file in files:
+			self.populate_files_c(file)
+
+		files = get_file(f"{self.inc_dir}/**/*.h", excluded_files)
+		self.nb_symbols_h_files += len(files)
+		for file in files:
+			self.populate_h_files(file)
+
+		self.print_stats_symbols("Successfully parsed:")
+
+		self.update_headers()
+		self.clean_headers()
+
+	def	populate_files_c(self, c_file: str) -> None:
+		with open(c_file, "r") as f:
+			c_file_str = f.read()
+
+		c_file_header = {}
+		for header in reg.c_header.findall(c_file_str):
+			c_file_header.update({
+				self.get_path(header): []
+			})
+
+		c_key = self.get_path(c_file)
+		self.update_data("c_files", c_file_header, c_key)
+
+	def	populate_h_files(self, h_file: str) -> None:
+		if self.is_private_header(h_file): return
+
+		header_path = self.get_path(h_file)
+		if not header_path: return
+		with open(header_path, "r") as f:
+			h_file_str = f.read()
+
+		h_file_header = reg.c_header.findall(h_file_str)
+		h_file_symbols = self.get_header_symbols(h_file_str)
+
+		# update data
+		self.update_data("h_files", h_file_header, header_path, "header")
+		self.update_data("h_files", h_file_symbols, header_path, "symbols")
+		# recursive part
+		for header in h_file_header:
+			path_header = self.get_path(header)
+			if path_header and path_header not in self.h_files:
+				self.populate_h_files(path_header)
 
 	def	is_private(self, src: str) -> bool:
 		return (src[0] == '_')
@@ -192,25 +201,7 @@ class Header():
 		if not basename: return False
 		return self.is_private(basename)
 
-	def	populate_files(self, excluded_files: list[str] = []) -> None:
-		files = get_file(f"{self.src_dir}/**/*.c", excluded_files)
-		self.nb_symbols_c_files += len(files)
-		for file in files:
-			self.populate_files_c(file)
-		files = get_file(f"{self.inc_dir}/**/*.h", excluded_files)
-		self.nb_symbols_h_files += len(files)
-		for file in files:
-			self.populate_files_h_tree(file)
-		self.print_stats("Successfully parsed:")
-
-	def	populate_files_c(self, c_file: str) -> None:
-		with open(c_file, "r") as f:
-			c_file_str = f.read()
-		c_file_header = reg.c_header.findall(c_file_str)
-		c_key = self.get_c_key(c_file)
-		self.update_data("c_files", c_file_header, c_key)
-
-	def	get_symbols(self, header_str: str) -> list:
+	def	get_header_symbols(self, header_str: str) -> list:
 		content: dict = {}
 
 		data = reg.proto.findall(header_str)
@@ -240,41 +231,37 @@ class Header():
 		for key in content.keys():
 			changed = 0
 			if key == "enum":
-				for key_2 in content[key]:
-					if not self.is_private(key_2):
-						parsed_content.append(key_2)
-						parsed_content.extend(content[key][key_2])
-						changed += len(content[key][key_2]) + 1
+				for sym in content[key]:
+					if not self.is_private(sym):
+						parsed_content.append(sym)
+						parsed_content.extend(content[key][sym])
+						changed += len(content[key][sym]) + 1
 			else:
-				for key_2 in content[key]:
-					if not self.is_private(key_2):
-						parsed_content.append(key_2)
+				for sym in content[key]:
+					if not self.is_private(sym):
+						parsed_content.append(sym)
 						changed += 1
 			tmp_name = self.stats_prefix + key
 			tmp = getattr(self, tmp_name)
 			setattr(self, tmp_name, tmp + changed)
-		# pprint([i for i in content if not self.is_private(i)])
 		return (parsed_content)
 
-	def	populate_files_h_tree(self, h_file: str) -> None:
-		if self.is_private_header(h_file): return
+	def	print_stats_symbols(self, title: str):
+		log.print(title, p.SUCCESS)
+		log.print(f"  function: {self.nb_symbols_function}", p.INFO)
+		log.print(f"  define:   {self.nb_symbols_define}", p.INFO)
+		log.print(f"  typedef:  {self.nb_symbols_typedef}", p.INFO)
+		log.print(f"  enum:     {self.nb_symbols_enum}", p.INFO)
+		log.print(f"in", p.SUCCESS)
+		log.print(f"  c file:   {self.nb_symbols_c_files}", p.INFO)
+		log.print(f"  h file:   {self.nb_symbols_h_files}", p.INFO)
 
-		header_path = self.get_path_header(h_file)
-		if not header_path: return
-		with open(header_path, "r") as f:
-			h_file_str = f.read()
-
-		h_file_header = reg.c_header.findall(h_file_str)
-		h_file_symbols = self.get_symbols(h_file_str)
-
-		# update data
-		self.update_data("h_tree_files", h_file_header, header_path, "header")
-		self.update_data("h_tree_files", h_file_symbols, header_path, "symbols")
-		# recursive part
-		for header in h_file_header:
-			path_header = self.get_path_header(header)
-			if path_header and path_header not in self.h_tree_files:
-				self.populate_files_h_tree(path_header)
+	def	update_headers(self) -> None:
+		for h_tree_key in self.h_files.keys():
+			self.current_content = {}
+			self.follow_content = {}
+			self.recursion_lvl = []
+			self.update_header_leaf(h_tree_key)
 
 	def	update_header_leaf(self, header_name: str) -> any:
 		"""
@@ -291,55 +278,123 @@ class Header():
 			pass
 
 
-		header_path = self.get_path_header(header_name)
+		header_path = self.get_path(header_name)
 		if not header_path: return {}
 
 		if len(self.recursion_lvl) > self.max_recursion:
 			log.print(
-				f"exceeded recursion, MAX"
-				f"{self.max_recursion},CUR{len(self.recursion_lvl)}",
-				p.WARN)
+				f"exceeded recursion of {self.max_recursion}, aborting", p.WARN)
 			return {}
 		self.recursion_lvl.append(header_name)
 		# self.print_recursion_lvl()
 
 		current_content: dict = {}
 
-		if "symbols" in self.h_tree_files[header_path]:
+		if "symbols" in self.h_files[header_path]:
 			current_content[header_path] = \
-				self.h_tree_files[header_path]["symbols"]
+				self.h_files[header_path]["symbols"]
 		else:
 			current_content[header_path] = []
 
-		if "header" in self.h_tree_files[header_path]:
-			for header in self.h_tree_files[header_path]["header"]:
-				tmp_key = self.get_path_header(header)
+		if "header" in self.h_files[header_path]:
+			for header in self.h_files[header_path]["header"]:
+				tmp_key = self.get_path(header)
 				if not tmp_key:
 					tmp_key = header
 				tmp_content = self.update_header_leaf(tmp_key)
 				current_content.update(tmp_content)
-			del self.h_tree_files[header_path]["header"]
+			del self.h_files[header_path]["header"]
 
 		tmp_list = []
 		for key in current_content.keys():
 			tmp_list.extend(current_content[key])
 		if len(tmp_list):
-			self.h_tree_files[header_path]["symbols"] = set(tmp_list)
+			self.h_files[header_path]["symbols"] = set(tmp_list)
 		self.recursion_lvl.remove(header_name)
 		return current_content
 
-	def	update_header_tree(self) -> None:
-		for h_tree_key in self.h_tree_files.keys():
-			self.current_content = {}
-			self.follow_content = {}
-			self.recursion_lvl = []
-			self.update_header_leaf(h_tree_key)
-
-	def	clean_header_tree(self) -> None:
-		for key in self.h_tree_files:
-			self.h_tree_files[key] = [
-				s for s in sorted(self.h_tree_files[key]["symbols"])
+	def	clean_headers(self) -> None:
+		for key in self.h_files:
+			self.h_files[key] = [
+				s for s in sorted(self.h_files[key]["symbols"])
 			]
+
+	def	print_data(self, include: list[str] = []):
+		if not len(include):
+			for file in self.c_files:
+				log.print(f" C {file}", p.DEBUG, 1)
+				for value in self.c_files[file]:
+					log.print(" C   " + value, p.DEBUG, 2)
+			for file in self.h_files:
+				log.print(f" H {file}", p.DEBUG, 1)
+				for key in self.h_files[file].keys():
+					log.print(f" H   - {key}:", p.DEBUG, 2)
+					for value in self.h_files[file][key]:
+						log.print(" H     - " + value, p.DEBUG, 3)
+		else:
+			for file in include:
+				tmp_key_c = self.get_path(file)
+				tmp_key_header = self.get_path(file)
+
+				if tmp_key_c in self.c_files.keys():
+					log.print(f" C {file}", p.DEBUG, 1)
+					for value in self.c_files[file]:
+						log.print(" C   " + value, p.DEBUG, 2)
+				elif tmp_key_header in self.h_files:
+					log.print(f" H {tmp_key_header}", p.DEBUG, 1)
+					for key in self.h_files[tmp_key_header].keys():
+						log.print(f" H   - {key}", p.DEBUG, 2)
+						for value in self.h_files[tmp_key_header][key]:
+							log.print(" H     - " + value, p.DEBUG, 3)
+				else:
+					log.print(f"[E] {file} not found", p.DEBUG, 1)
+					log.print(f"[E]   {tmp_key_c=}", p.DEBUG, 2)
+					log.print(f"[E]   {tmp_key_header=}", p.DEBUG, 2)
+
+	def	print_recursion_lvl(self):
+		tmp_lvl = 1
+		log.print(f"rec lvl {len(self.recursion_lvl)}", p.SUCCESS, 1)
+		for lvl in self.recursion_lvl:
+			log.print(f"  {tmp_lvl}. {lvl}", p.INFO, 2)
+			tmp_lvl += 1
+
+	def	get_unused_header(self):
+		self.all_good = True
+		for c_file in self.c_files.keys():
+			self.process_file(c_file)
+		if not self.all_good:
+			log.print(f"{c_file} failed", p.DEBUG)
+
+	def	process_file(self, c_file: str):
+		with open(c_file, "r") as f:
+			c_file_str = f.read()
+
+		c_file_word = [
+			w for w
+			in set(reg.word.findall(c_file_str))
+			if w not in BLACK_LISTED_WORD
+			and w not in reg.proto.findall(c_file_str)
+		]
+		for header in self.c_files[c_file]:
+			sym = self.h_files[header]
+			for word in c_file_word:
+				if word in sym:
+					self.c_files[c_file][header].append(word)
+
+			if len(self.c_files[c_file][header]):
+				word_title = f"{a.GREEN}"
+				word_title += f"{a.RST}, {a.GREEN}".join(self.c_files[c_file][header])
+				word_title += f"{a.RST}"
+				c_title = f"{a.YELLOW}{self.get_key(c_file)}{a.RST}"
+				header_title = f"{a.YELLOW}{self.get_key(header)}{a.RST}"
+				log.print(f"{word_title} used in"
+							f" {c_title} and {header_title}", p.DEBUG)
+			else:
+				self.all_good = False
+				c_title = f"{a.UNDERLINE}{a.YELLOW}{self.get_key(c_file)}{a.RST}"
+				header_title = f"{a.RED}{self.get_key(header)}{a.RST}"
+				log.print(f"{c_title} have an unused header, {header_title}",
+																	p.FAILURE)
 
 if __name__ == "__main__":
 	config = {

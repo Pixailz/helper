@@ -6,6 +6,7 @@ class	RegexFinder():
 		self.re_git()
 		self.re_c()
 		self.re_compile_proto()
+		self.word = re.compile(r'\w+')
 
 	def	re_git(self) -> None:
 		re_git_name = r'^\[remote \"origin\"\]\n\s+url = (https://github\.com/|git@github\.com:).*?/(.*?)$'
