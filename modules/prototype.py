@@ -1,6 +1,6 @@
 from modules import *
 
-class Prototype():
+class	Prototype():
 	def	__init__(self, inc_dir, src_dir):
 		self.inc_dir = os.path.join(CWD, inc_dir)
 		self.src_dir = os.path.join(CWD, src_dir)

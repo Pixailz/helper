@@ -7,7 +7,7 @@ BLACK_LISTED_WORD = [
 	"else"
 ]
 
-class Header():
+class	Header():
 	def	__init__(self,
 			inc_dir: str,
 			src_dir: str,
@@ -28,19 +28,8 @@ class Header():
 		self.reset_stats()
 		self.populate_files(excluded_files)
 
-		self.get_unused_header()
-
 	def	reset_stats(self):
 		self.stats_prefix = "nb_symbols_"
-
-		# LIBFT:
-		## NB_SYMBOLS_FUNCTION: 286
-		## NB_SYMBOLS_DEFINE:   131
-		## NB_SYMBOLS_TYPEDEF:  576
-		## NB_SYMBOLS_ENUM:     158
-		## NB_SYMBOLS_C_FILES:  123
-		## NB_SYMBOLS_H_FILES:  23
-
 		self.nb_symbols_function = 0
 		self.nb_symbols_define = 0
 		self.nb_symbols_typedef = 0
@@ -192,14 +181,6 @@ class Header():
 			path_header = self.get_path(header)
 			if path_header and path_header not in self.h_files:
 				self.populate_h_files(path_header)
-
-	def	is_private(self, src: str) -> bool:
-		return (src[0] == '_')
-
-	def	is_private_header(self, src: str) -> bool:
-		basename = os.path.basename(src)
-		if not basename: return False
-		return self.is_private(basename)
 
 	def	get_header_symbols(self, header_str: str) -> list:
 		content: dict = {}
@@ -395,29 +376,3 @@ class Header():
 				header_title = f"{a.RED}{self.get_key(header)}{a.RST}"
 				log.print(f"{c_title} have an unused header, {header_title}",
 																	p.FAILURE)
-
-if __name__ == "__main__":
-	config = {
-		"inc_dir": "inc",
-		"src_dir": "src",
-	}
-	header = Header(**config)
-	header.print_data([
-		# "test/libft_a.h",
-		# "test/libft_b.h",
-		# "test/libft_c.h",
-		# "test/libft_d.h",
-		# "test/libft_e.h",
-		# "test/libft_f.h",
-		# "test/libft_g.h",
-		# "test/libft_h.h",
-		# libft
-		"libft_print.h",
-		"string/ft_strlen.c",
-		"print/ft_printf.c",
-		"libft_string.h",
-
-		# # standard
-		"stdarg.h",
-		"stdlib.h",
-	])

@@ -1,6 +1,6 @@
 from modules import *
 
-class Setup():
+class	Setup():
 	def	__init__(self):
 		self.setup_name = os.getenv("HELPER_SETUP_NAME")
 		setup_json_path = os.path.join(HELPER_DIR, "modules/utils/setup.json")
@@ -66,6 +66,7 @@ class Setup():
 			makefile	= self.current_config["makefile"],
 			src_dir		= self.current_config["src_dir"],
 		)
+
 		for item in data:
 			makefile.add_var(*item)
 		makefile.update_makefile()
@@ -75,6 +76,7 @@ class Setup():
 			inc_dir	= self.current_config["inc_dir"],
 			src_dir	= self.current_config["src_dir"],
 		)
+
 		for item in data:
 			prototype.add_header(*item)
 		prototype.update_include()
@@ -85,4 +87,4 @@ class Setup():
 			src_dir	= self.current_config["src_dir"],
 		)
 
-setup = Setup()
+		header.get_unused_header()

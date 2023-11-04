@@ -26,7 +26,7 @@ class	a():
 	BLINKING	= f"{ESC}[5m"
 	SEP			= f"{RED}|{RST}"
 
-class Log():
+class	Log():
 
 	@staticmethod
 	def	get_caller(index = 0):

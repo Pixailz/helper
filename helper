@@ -2,5 +2,12 @@
 
 from modules import *
 
+class	Helper():
+	def	__init__(self):
+		if len(sys.argv):
+			self.parsing = Parsing()
+		else:
+			self.setup = Setup()
 if __name__ == "__main__":
-	setup.launch()
+	helper = Helper()
+	# setup = Setup()

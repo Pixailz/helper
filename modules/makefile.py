@@ -1,13 +1,12 @@
 from modules import *
 
-class Makefile():
-	def	__init__(self, makefile, src_dir, makefile_path_depth=0):
+class	Makefile():
+	def	__init__(self, makefile, src_dir):
 		self.makefile = os.path.join(CWD, makefile)
 		self.src_dir = os.path.join(CWD, src_dir)
 		log.print(f"Makefile target{a.SEP}{self.makefile}", p.DEBUG, 1)
 		log.print(f"Makefile src   {a.SEP}{self.src_dir}", p.DEBUG, 1)
 		self.makefile_var = []
-		self.makefile_path_depth = makefile_path_depth
 
 	def	add_var(self, var, folder=None):
 		log.print(f"{var}{a.SEP}{folder}", p.DEBUG, 1)
@@ -44,7 +43,8 @@ class Makefile():
 				file_path = f"{dirpath}/{file}".removeprefix(self.src_dir + '/')
 				log.print(f"file found [{file_path}]", p.DEBUG, 3)
 				files.append(file_path)
-		log.print(f"[{a.GREEN}{len(files)}{a.RST}] file found for [{a.RED}{var}{a.RST}]")
+		log.print(f"[{a.GREEN}{len(files)}{a.RST}] file found for"
+				  f"[{a.YELLOW}{var}{a.RST}]")
 		return (self.format_src(var, *files))
 
 	def	update_makefile(self):

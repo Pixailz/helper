@@ -1,12 +1,12 @@
 from modules import *
 
-class TimerMode(enum.Enum):
+class	TimerMode(enum.Enum):
 	NORM	= 1
 	MONO	= 2
 	PERF	= 3
 	PROC	= 4
 
-class Timer():
+class	Timer():
 	def	__init__(self, mode=TimerMode.NORM):
 		self._mode = mode
 
