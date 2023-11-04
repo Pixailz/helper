@@ -3,7 +3,8 @@ from modules import *
 class	Is():
 	def	__init__(self) -> None: pass
 
-	def	private(self, src: str) -> bool:
+	@staticmethod
+	def	private(src: str) -> bool:
 		return (src[0] == '_')
 
 	def	private_header(self, src: str) -> bool:

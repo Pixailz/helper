@@ -14,8 +14,8 @@ class	Header():
 			excluded_files: list[str]	= [],
 			max_recursion: int			= 10,
 		):
-		self.inc_dir: str = os.path.join(CWD, inc_dir)
-		self.src_dir: str = os.path.join(CWD, src_dir)
+		self.inc_dir: str = os.path.join(__CWD__, inc_dir)
+		self.src_dir: str = os.path.join(__CWD__, src_dir)
 		self.c_files: dict[any] = {}
 		self.h_files: dict[any] = {}
 
@@ -363,16 +363,16 @@ class	Header():
 					self.c_files[c_file][header].append(word)
 
 			if len(self.c_files[c_file][header]):
-				word_title = f"{a.GREEN}"
-				word_title += f"{a.RST}, {a.GREEN}".join(self.c_files[c_file][header])
+				word_title = f"{a.GRE}"
+				word_title += f"{a.RST}, {a.GRE}".join(self.c_files[c_file][header])
 				word_title += f"{a.RST}"
-				c_title = f"{a.YELLOW}{self.get_key(c_file)}{a.RST}"
-				header_title = f"{a.YELLOW}{self.get_key(header)}{a.RST}"
+				c_title = f"{a.YEL}{self.get_key(c_file)}{a.RST}"
+				header_title = f"{a.YEL}{self.get_key(header)}{a.RST}"
 				log.print(f"{word_title} used in"
 							f" {c_title} and {header_title}", p.DEBUG)
 			else:
 				self.all_good = False
-				c_title = f"{a.UNDERLINE}{a.YELLOW}{self.get_key(c_file)}{a.RST}"
+				c_title = f"{a.UND}{a.YEL}{self.get_key(c_file)}{a.RST}"
 				header_title = f"{a.RED}{self.get_key(header)}{a.RST}"
 				log.print(f"{c_title} have an unused header, {header_title}",
 																	p.FAILURE)

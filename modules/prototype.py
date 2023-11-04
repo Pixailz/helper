@@ -2,8 +2,8 @@ from modules import *
 
 class	Prototype():
 	def	__init__(self, inc_dir, src_dir):
-		self.inc_dir = os.path.join(CWD, inc_dir)
-		self.src_dir = os.path.join(CWD, src_dir)
+		self.inc_dir = os.path.join(__CWD__, inc_dir)
+		self.src_dir = os.path.join(__CWD__, src_dir)
 		log.print(f"Prototype base inc dir {a.SEP}[{self.inc_dir}]", p.DEBUG, 1)
 		log.print(f"Prototype base src dir {a.SEP}[{self.src_dir}]", p.DEBUG, 1)
 		self.headers = []
@@ -47,7 +47,7 @@ class	Prototype():
 				log.print(f"prototype without type not found in [{item}]", p.FAILURE, 1)
 				return
 			log.print(
-				f"found {a.RED}{func_type[0]} {a.GREEN}{func_not_type[0]}{a.RST}",
+				f"found {a.RED}{func_type[0]} {a.GRE}{func_not_type[0]}{a.RST}",
 				p.DEBUG, 3)
 			self.to_replace[src_id].append((func_type[0], func_not_type[0] + ";\n"))
 
@@ -107,7 +107,7 @@ class	Prototype():
 				if self.get_proto():
 					log.print(f"no prototype found in [{self.header}]", p.WARN)
 					return
-				log_str = f"found [{a.GREEN}{len(self.to_replace)}{a.RST}] "
+				log_str = f"found [{a.GRE}{len(self.to_replace)}{a.RST}] "
 				log_str += f"prototype for [{os.path.basename(self.header)}]"
 				log.print(log_str, p.SUCCESS, 1)
 				self.header_str.insert(self.src_pos, ''.join(self.to_replace))

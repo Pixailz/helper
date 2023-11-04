@@ -1,90 +1,169 @@
 from modules import *
 
+from modules import __SETUP_DEFAULT_NAME__
+from modules import __HELPER_DIR__
+from modules import __MODULES__
+from modules import __NO_ANSI__
+
 class	Setup():
 	def	__init__(self):
-		self.setup_name = os.getenv("HELPER_SETUP_NAME")
-		setup_json_path = os.path.join(HELPER_DIR, "modules/utils/setup.json")
-		with open(setup_json_path, "r") as f:
+		self.config = {}
+
+		if len(sys.argv):
+			self.parsing = Parsing()
+			self.parsing.parse_args()
+
+		self.setup_json_path = os.path.join(__HELPER_DIR__, "modules/setup.json")
+		if not os.path.isfile(self.setup_json_path):
+			log.print(f"{self.setup_json_path} is not a file exiting", p.FAILURE)
+			return
+
+		self.populate_conf_json()
+
+	def	populate_conf_json(self):
+		with open(self.setup_json_path, "r") as f:
 			setup_json = f.read()
-		self.config = json.loads(setup_json)
+		self.config_json = json.loads(setup_json)
 
-	def	print_elapsed(self, title):
-		elapsed = timer.elapsed()
-		elapsed /= 1000
-		warning = False
-		if elapsed > .75 * 1_000_000:
-			elapsed_str = a.RED
-			warning = True
-		elif elapsed > .25 * 1_000_000:
-			elapsed_str = a.YELLOW
-			warning = True
-		else:
-			elapsed_str = a.GREEN
-
-		elapsed_str += str(round(elapsed, 3)) + a.RST
-
-		if warning:
-			log.print(f"Module {a.YELLOW}{title}{a.RST} "
-				f"took {elapsed_str} ms", p.WARN)
-		else:
-			log.print(f"Module {a.YELLOW}{title}{a.RST} "
-				f"took {elapsed_str} ms", p.INFO)
-
-	def	launch(self):
+		self.setup_name = os.getenv("HELPER_SETUP_NAME")
 		if not self.setup_name:
-			log.print("HELPER_SETUP_NAME variable not found", p.FAILURE)
+			self.setup_name = __SETUP_DEFAULT_NAME__
+
+		if self.setup_name not in self.config_json:
+			log.print(f"{self.setup_name} found in config_json, aborting", p.FAILURE)
 			return
-		log.print(f"Executing setup ({a.YELLOW}{self.setup_name}{a.RST})", p.INFO, 1)
-		if self.setup_name not in self.config:
-			log.print(f"[{self.setup_name}] not implemented yet", p.FAILURE)
-			return
-		self.do_setup()
-		log.print(f"Successfully executed setup ({a.GREEN}{self.setup_name}{a.RST})", p.SUCCESS)
 
-	def	do_setup(self) -> None:
-		for part in self.config[self.setup_name]:
-			log.print(f"{self.setup_name} Part {part}")
+		conf_json = self.config_json[self.setup_name]
+		conf_setup = self.config[self.setup_name] = {
+			"_config_": conf_json["_config_"],
+			"_profile_": {},
+		}
 
-			data = self.config[self.setup_name][part]
-			self.current_config = data["part_config"]
-			del data["part_config"]
+		conf_setup["_config_"].update({
+			"no_ansi": __NO_ANSI__,
+			"log_file": None,
+		})
 
-			for module in data:
-				log.print(f"{self.setup_name}   Module {module}")
+		for key in conf_json:
+			if not Is.private(key):
+				conf_setup["_profile_"][key] = tmp_profile = {
+					"_config_": conf_json["_config_"].copy()
+				}
 
-				match module:
-					case "makefile": module_func = self.do_setup_makefile
-					case "prototype": module_func = self.do_setup_prototype
-					case "header": module_func = self.do_setup_header
-				timer.begin()
-				module_func(data[module])
-				timer.end()
-				self.print_elapsed(module)
+				if "_config_" in conf_json[key]:
+					tmp_profile["_config_"].update(conf_json[key]["_config_"])
 
-	def	do_setup_makefile(self, data: any) -> None:
-		makefile = Makefile(
-			makefile	= self.current_config["makefile"],
-			src_dir		= self.current_config["src_dir"],
-		)
+				for mod_json in conf_json[key]:
+					if not Is.private(mod_json):
+						if mod_json in __MODULES__:
+							tmp_profile[mod_json] = conf_json[key][mod_json]
 
-		for item in data:
-			makefile.add_var(*item)
-		makefile.update_makefile()
+"""
+{
+	"_default_": {
+		"_config_": {
+			"src_dir": "src",
+			"inc_dir": "inc",
+			"makefile": "mk/srcs.mk",
+		},
+		"_profile_": {
+			"mandatory": {
+				"_config_": {
+					"makefile": "mk/srcs.mk",
+					"src_dir": "src/mandatory"
+				},
+				"makefile": [
+					["SRC_C_MANDATORY"]
+				],
+				"prototype": [
+					["ft_ping.h"]
+				],
+				"header": []
+				}
+			},
+		},
+	}
+}
+"""
 
-	def	do_setup_prototype(self, data: any) -> None:
-		prototype = Prototype(
-			inc_dir	= self.current_config["inc_dir"],
-			src_dir	= self.current_config["src_dir"],
-		)
+"""
+{
+    "_default_":{
+        "_config_":{
+            "inc_dir":"inc",
+            "log_file":"None",
+            "makefile":"mk/srcs.mk",
+            "no_ansi":false,
+            "src_dir":"src"
+        },
+        "_profile_":{
+            "bonus":{
+                "_config_":{
+                    "inc_dir":"inc",
+                    "log_file":"None",
+                    "makefile":"mk/srcs.mk",
+                    "no_ansi":false,
+                    "src_dir":"src/bonus"
+                },
+                "header":[
 
-		for item in data:
-			prototype.add_header(*item)
-		prototype.update_include()
+                ],
+                "makefile":[
+                    [
+                        "SRC_C_BONUS"
+                    ]
+                ],
+                "prototype":[
+                    [
+                        "template_bonus.h"
+                    ]
+                ]
+            },
+            "mandatory":{
+                "_config_":{
+                    "inc_dir":"inc",
+                    "log_file":"None",
+                    "makefile":"mk/srcs.mk",
+                    "no_ansi":false,
+                    "src_dir":"src/mandatory"
+                },
+                "header":[
 
-	def	do_setup_header(self, data: any) -> None:
-		header = Header(
-			inc_dir	= self.current_config["inc_dir"],
-			src_dir	= self.current_config["src_dir"],
-		)
+                ],
+                "makefile":[
+                    [
+                        "SRC_C_MANDATORY"
+                    ]
+                ],
+                "prototype":[
+                    [
+                        "template.h"
+                    ]
+                ]
+            },
+            "test":{
+                "_config_":{
+                    "inc_dir":"inc",
+                    "log_file":"None",
+                    "makefile":"mk/srcs.mk",
+                    "no_ansi":false,
+                    "src_dir":"src"
+                },
+                "header":[
 
-		header.get_unused_header()
+                ],
+                "makefile":[
+                    [
+                        "SRC_C"
+                    ]
+                ],
+                "prototype":[
+                    [
+                        "test.h"
+                    ]
+                ]
+            }
+        }
+    }
+}
+"""

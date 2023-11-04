@@ -1,88 +1,107 @@
 {
-  "ft_libft": {
-    "bonus": {
-      "part_config": {
-        "makefile": "mk/srcs.mk",
-        "inc_dir": "inc",
-        "src_dir": "src"
-      },
-      "makefile": [
-        ["SRC_INT", "integer"],
-        ["SRC_STR", "string"],
-        ["SRC_MEM", "memory"],
-        ["SRC_PAR", "parsing"],
-        ["SRC_ERR", "error"],
-        ["SRC_CHK", "check"],
-        ["SRC_LST", "list"],
-        ["SRC_PRT", "print"],
-        ["SRC_INP", "input"],
-        ["SRC_RDM", "random"],
-        ["SRC_LNX", "linux"],
-        ["SRC_NET_IPV4", "network/ipv4"],
-        ["SRC_UNI_TEST", "unit_test"]
-      ],
-      "prototype": [
-        ["libft_integer.h", "integer"],
-        ["libft_string.h", "string"],
-        ["libft_memory.h", "memory"],
-        ["libft_parsing.h", "parsing"],
-        ["libft_error.h", "error"],
-        ["libft_check.h", "check"],
-        ["libft_list.h", "list"],
-        ["libft_print.h", "print"],
-        ["libft_input.h", "input"],
-        ["libft_random.h", "random"],
-        ["libft_linux.h", "linux"],
-        ["libft_network/ipv4.h", "network/ipv4"],
-        ["libft_unit_test.h", "unit_test"]
-      ],
-      "header": []
-    }
-  },
-  "ft_ping": {
-    "mandatory": {
-      "part_config": {
-        "makefile": "mk/srcs.mk",
-        "inc_dir": "inc",
-        "src_dir": "src/mandatory"
-      },
-      "makefile": [
-        ["SRC_C_MANDATORY"]
-      ],
-      "prototype": [
-        ["ft_ping.h"]
-      ],
-      "header": []
-    }
-  },
-  "SupaBlank": {
-    "mandatory": {
-      "part_config": {
-        "makefile": "mk/srcs.mk",
-        "inc_dir": "inc",
-        "src_dir": "src/mandatory"
-      },
-      "makefile": [
-        ["SRC_C_MANDATORY"]
-      ],
-      "prototype": [
-        ["template.h"]
-      ],
-      "header": []
+    "_default_": {
+        "_config_": {
+            "src_dir": "src",
+            "inc_dir": "inc",
+            "makefile": "mk/srcs.mk"
+        },
+        "mandatory": {
+            "_config_": {
+                "src_dir": "src/mandatory"
+            },
+            "makefile": [
+                ["SRC_C_MANDATORY"]
+            ],
+            "prototype": [
+                ["template.h"]
+            ],
+            "header": [ ]
+        }
     },
-    "bonus": {
-      "part_config": {
-        "makefile": "mk/srcs.mk",
-        "inc_dir": "inc",
-        "src_dir": "src/bonus"
-      },
-      "makefile": [
-        ["SRC_C_BONUS"]
-      ],
-      "prototype": [
-        ["template_bonus.h"]
-      ],
-      "header": []
+    "ft_libft": {
+        "_config_": {
+            "inc_dir": "inc",
+            "src_dir": "src",
+            "makefile": "mk/srcs.mk"
+        },
+        "bonus": {
+            "makefile": [
+                ["SRC_INT", "integer"],
+                ["SRC_STR", "string"],
+                ["SRC_MEM", "memory"],
+                ["SRC_PAR", "parsing"],
+                ["SRC_ERR", "error"],
+                ["SRC_CHK", "check"],
+                ["SRC_LST", "list"],
+                ["SRC_PRT", "print"],
+                ["SRC_INP", "input"],
+                ["SRC_RDM", "random"],
+                ["SRC_LNX", "linux"],
+                ["SRC_NET_IPV4", "network/ipv4"],
+                ["SRC_UNI_TEST", "unit_test"]
+            ],
+            "prototype": [
+                ["libft_integer.h", "integer"],
+                ["libft_string.h", "string"],
+                ["libft_memory.h", "memory"],
+                ["libft_parsing.h", "parsing"],
+                ["libft_error.h", "error"],
+                ["libft_check.h", "check"],
+                ["libft_list.h", "list"],
+                ["libft_print.h", "print"],
+                ["libft_input.h", "input"],
+                ["libft_random.h", "random"],
+                ["libft_linux.h", "linux"],
+                ["libft_network/ipv4.h", "network/ipv4"],
+                ["libft_unit_test.h", "unit_test"]
+            ],
+            "header": []
+        }
+    },
+    "ft_ping": {
+        "_config_": {
+            "inc_dir": "inc",
+            "makefile": "mk/srcs.mk",
+            "src_dir": "src/mandatory"
+        },
+        "mandatory": {
+            "makefile": [
+                ["SRC_C_MANDATORY"]
+            ],
+            "prototype": [
+                ["ft_ping.h"]
+            ],
+            "header": []
+        }
+    },
+    "SupaBlank": {
+        "_config_": {
+            "inc_dir": "inc",
+            "makefile": "mk/srcs.mk"
+        },
+        "mandatory": {
+            "_config_": {
+                "src_dir": "src/mandatory"
+            },
+            "makefile": [
+                ["SRC_C_MANDATORY"]
+            ],
+            "prototype": [
+                ["template.h"]
+            ],
+            "header": []
+        },
+        "bonus": {
+            "_config_": {
+                "src_dir": "src/bonus"
+            },
+            "makefile": [
+                ["SRC_C_BONUS"]
+            ],
+            "prototype": [
+                ["template_bonus.h"]
+            ],
+            "header": []
+        }
     }
-  }
 }

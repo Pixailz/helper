@@ -10,7 +10,7 @@ class	Timer():
 	def	__init__(self, mode=TimerMode.NORM):
 		self._mode = mode
 
-		self._begin = None
+		self.begin()
 		self._end = None
 
 	def	begin(self):
@@ -33,8 +33,9 @@ class	Timer():
 		return value
 
 	def	elapsed(self) -> int:
+		if not self.end:
+			log.print("end not set, aborting", p.FAILURE)
+			return None
 		elapsed_time = self._end - self._begin
 		# elapsed_time = round(elapsed_time, 3)
 		return elapsed_time
-
-timer = Timer()
