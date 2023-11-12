@@ -23,4 +23,4 @@ class	a():
 	BLI	= f"{ESC}[5m"
 
 	# COMPOSITE
-	SEP	= f"{RED}|{RST}"
+	SEP	= f" "

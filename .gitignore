@@ -13,7 +13,5 @@ __pycache__
 # vscode settings
 .vscode/
 
-# test project
-philosophers/
-ft_libft/
-minishell/
+# log file
+*.log

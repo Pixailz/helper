@@ -78,7 +78,7 @@ class	Parsing():
 
 		self.parser.add_argument(
 			f"--log-file", "-L",
-			help=f"{_WIP}{_F_META_LOG_FILE} to output log",
+			help=f"{_F_META_LOG_FILE} to output log",
 			metavar=_F_META_LOG_FILE,
 			default=None,
 			type=str,
@@ -123,6 +123,7 @@ class	Parsing():
 
 	def	parse_args(self):
 		self.args = vars(self.parser.parse_args())
+		log.set_log_file(self.args["log_file"])
 		log.print(f"Successfully parsed sys.argv", p.SUCCESS)
 
 parsing = Parsing()
