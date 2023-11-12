@@ -34,6 +34,8 @@ class	Setup():
 		conf_setup["_config_"].update({
 			"no_color": parsing.args["no_color"],
 			"log_file": parsing.args["log_file"],
+			"header_max_rec": parsing.args["header_max_rec"],
+			"remove_unused": parsing.args["remove_unused"],
 		})
 
 		for key in conf_json:

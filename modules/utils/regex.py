@@ -16,7 +16,7 @@ class	RegexFinder():
 		self.get_src_header = re.compile( r'^// [\w/.]*?\.c$.*?;$\n\n', re.S | re.M)
 		self.c_define = re.compile(r'^#\s*define\s+(\w+)', re.S | re.M)
 		self.c_typedef = re.compile(r'typedef.*?(\w+);$', re.S | re.M)
-		c_header_begin = r'#\s*include '
+		c_header_begin = r'#\s*include\s+'
 		self.c_header = re.compile(c_header_begin + r'[<"](.+)[>"]')
 		self.c_header_define = re.compile(r'#\s*define\s+(.*?)\s')
 		self.c_enum_values = re.compile(r'enum\s+\w+?\s+?{\s+(\w.*?),?\s*}', re.S | re.M)
@@ -39,8 +39,8 @@ class	RegexFinder():
 					re_begin + t_between + re_param + r'|' + \
 					re_begin + t_between * 2 + re_param + r'|' + \
 					re_begin + t_between * 3 + re_param
-		re_param = ptr + r'(\w+)\(.*?\);$'
-		re_proto = re_begin + re_param
+		re_param = ptr + r'(\w+)\(.*?\).*?;'
+		re_proto = r'(?!static)\w+\*?\*?\*?\s+\*?\*?\*?(\w+)\s*\(.*?\).*?;'
 		re_type = r'^(.*?)\s+' + t_end + r'\('
 		re_not_type = r'\s+(' + t_end + r'\(.*?\))$'
 

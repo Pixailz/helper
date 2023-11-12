@@ -109,9 +109,9 @@ class	Prototype():
 				if self.get_proto():
 					log.print(f"no prototype found in [{self.header}]", p.WARN)
 					return
-				log.print(f"found [{a.GRE}{len(self.to_replace)}{a.RST}] "
-						  f"prototype for [{a.ITA}{a.YEL}"
-						  f"{os.path.basename(self.header)}{a.RST}]",
+				log.print(f"found {a.GRE}{len(self.to_replace)}{a.RST} "
+						  f"prototype for {a.ITA}{a.YEL}"
+						  f"{os.path.basename(self.header)}{a.RST}",
 						  p.SUCCESS, 1)
 				self.header_str.insert(self.src_pos, ''.join(self.to_replace))
 				with open(self.header, 'w') as f:

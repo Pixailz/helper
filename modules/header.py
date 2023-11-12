@@ -3,10 +3,22 @@ from modules import *
 from modules import __CWD__
 
 BLACK_LISTED_WORD = [
+	"include",
 	"return",
-	"while"
-	"if"
-	"else"
+	"while",
+	"for",
+	"of",
+	"if",
+	"else",
+	"const",
+	"unsigned",
+	"char",
+	"short",
+	"int",
+	"long",
+	"float",
+	"double",
+	"void",
 ]
 
 class	Header():
@@ -15,6 +27,7 @@ class	Header():
 			src_dir: str,
 			excluded_files: list[str]	= [],
 			max_recursion: int			= 10,
+			remove_unused: bool			= False,
 		):
 		self.inc_dir: list[str] = inc_dir
 		self.src_dir: str = os.path.join(__CWD__, src_dir)
@@ -29,6 +42,8 @@ class	Header():
 
 		self.reset_stats()
 		self.populate_files(excluded_files)
+
+		self.remove_unused = remove_unused
 
 	def	get_lib_compiler(self, compiler: str) -> None:
 		io = reg.c_compiler_inc.findall(
@@ -351,6 +366,10 @@ class	Header():
 			self.process_file(c_file)
 		if not self.all_good:
 			log.print(f"{c_file} failed", p.DEBUG)
+		else:
+			log.print(f"None of the {a.GRE}{len(self.c_files)}{a.RST} C file, "
+					   "include unused header",
+					p.SUCCESS)
 
 	def	process_file(self, c_file: str):
 		with open(c_file, "r") as f:
@@ -382,3 +401,17 @@ class	Header():
 				header_title = f"{a.RED}{self.get_key(header)}{a.RST}"
 				log.print(f"{c_title} have an unused header, {header_title}",
 																	p.WARN)
+				self.remove_unused_header(c_file, c_file_str, self.get_key(header))
+
+	def	remove_unused_header(
+			self,
+			file_path: str,
+			file_str: str,
+			header_key: str
+		) -> None:
+		if not self.remove_unused:
+			return
+		to_write = re.sub(
+				r'#\s*include\s+[<"]' + header_key + r'[>"]\n\n', "", file_str)
+		with open(file_path, "w") as f:
+			f.write(to_write)

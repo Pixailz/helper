@@ -69,6 +69,8 @@ class	Run():
 		header = Header(
 			inc_dir	= self.current_config["inc_dir"],
 			src_dir	= self.current_config["src_dir"],
+			max_recursion = self.current_config["header_max_rec"],
+			remove_unused = self.current_config["remove_unused"],
 		)
 
 		header.get_unused_header()

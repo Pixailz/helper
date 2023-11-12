@@ -114,11 +114,17 @@ class	Parsing():
 
 		self.g_header.add_argument(
 			f"--header-max-rec",
-			help=f"{_WIP}Limit the recursion of the "
+			help=f"Limit the recursion of the "
 				 f"{_MOD}Header{a.RST} module by {_F_META_N}",
 			metavar=_F_META_N,
 			default=10,
 			type=int,
+		)
+
+		self.g_header.add_argument(
+			f"--remove-unused",
+			help=f"remove unused header in C file",
+			action="store_true",
 		)
 
 	def	parse_args(self):
