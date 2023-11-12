@@ -14,6 +14,7 @@ class	a():
 	PUR	= f"{ESC}[35m"
 	CYA	= f"{ESC}[36m"
 	WHI	= f"{ESC}[37m"
+	ORA = f"{ESC}[38;5;208m"
 
 	# MODIFIER
 	RST	= f"{ESC}[0m"

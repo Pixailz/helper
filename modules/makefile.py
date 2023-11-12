@@ -46,7 +46,7 @@ class	Makefile():
 				log.print(f"file found [{file_path}]", p.DEBUG, 3)
 				files.append(file_path)
 		log.print(f"[{a.GRE}{len(files)}{a.RST}] file found for "
-				  f"[{a.YEL}{var}{a.RST}]", p.SUCCESS)
+				  f"[{a.ITA}{a.YEL}{var}{a.RST}]", p.SUCCESS)
 		return (self.format_src(var, *files))
 
 	def	update_makefile(self):

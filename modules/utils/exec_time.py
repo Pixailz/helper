@@ -37,5 +37,5 @@ class	Timer():
 			log.print("end not set, aborting", p.FAILURE)
 			return None
 		elapsed_time = self._end - self._begin
-		# elapsed_time = round(elapsed_time, 3)
-		return elapsed_time
+		elapsed_time /= 1000
+		return round(elapsed_time, 3)

@@ -37,19 +37,19 @@ class	Log():
 		match mode:
 			case p.INFO:
 				title_color = a.CYA
-				title_str = "INFO"
+				title_str = "*"
 			case p.DEBUG:
 				title_color = a.BLU
-				title_str = "DEBG"
+				title_str = "+"
 			case p.WARN:
-				title_color = a.YEL
-				title_str = "WARN"
+				title_color = a.ORA
+				title_str = "!"
 			case p.SUCCESS:
 				title_color = a.GRE
-				title_str = "PASS"
+				title_str = "+"
 			case p.FAILURE:
 				title_color = a.RED
-				title_str = "FAIL"
+				title_str = "-"
 			case p.RAW:
 				title_color = ""
 				title_str = ""

@@ -11,22 +11,27 @@ class	Run():
 		log.print("Executing helper profile "
 				 f"({a.YEL}{parsing.args['setup_name']}{a.RST})", p.INFO, 1)
 
+		timer = Timer()
 		self.do_setup()
+		timer.end()
 
-		log.print("Successfully executed helper profile "
-				 f"({a.GRE}{parsing.args['setup_name']}{a.RST})", p.SUCCESS)
+		log.print("Successfully executed helper profile"
+				 f", {a.GRE}{parsing.args['setup_name']}{a.RST}, in "
+				 f"{a.GRE}{timer.elapsed()}{a.RST} ms", p.SUCCESS)
 
 	def	do_setup(self) -> None:
 
 		for part in setup.config[parsing.args["setup_name"]]["_profile_"]:
-			log.print(f"{parsing.args['setup_name']} Part {part}")
+			log.print(f"{a.YEL}{parsing.args['setup_name']}{a.RST} Part "
+					  f"{a.PUR}{part}{a.RST}")
 
 			data = setup.config[parsing.args["setup_name"]]["_profile_"][part]
 			self.current_config = data["_config_"]
 
 			for module in data:
 				if not Is.private(module):
-					log.print(f"{parsing.args['setup_name']}   Module {module}")
+					log.print(f"{a.YEL}{parsing.args['setup_name']}{a.RST} "
+							  f"  Module {a.ITA}{a.GRE}{module}{a.RST}")
 
 					match module:
 						case "makefile": module_func = self.do_setup_makefile
@@ -70,7 +75,6 @@ class	Run():
 
 	def	print_elapsed(self, title, timer):
 		elapsed = timer.elapsed()
-		elapsed /= 1000
 		warning = False
 		if elapsed > .75 * 1_000_000:
 			elapsed_str = a.RED
@@ -81,11 +85,11 @@ class	Run():
 		else:
 			elapsed_str = a.GRE
 
-		elapsed_str += str(round(elapsed, 3)) + a.RST
+		elapsed_str += str(elapsed) + a.RST
 
 		if warning:
-			log.print(f"Module {a.YEL}{title}{a.RST} "
+			log.print(f"Module {a.ITA}{a.GRE}{title}{a.RST} "
 				f"took {elapsed_str} ms", p.WARN)
 		else:
-			log.print(f"Module {a.YEL}{title}{a.RST} "
+			log.print(f"Module {a.ITA}{a.GRE}{title}{a.RST} "
 				f"took {elapsed_str} ms", p.INFO)

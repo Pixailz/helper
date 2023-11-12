@@ -234,13 +234,14 @@ class	Header():
 
 	def	print_stats_symbols(self, title: str):
 		log.print(title, p.SUCCESS)
-		log.print(f"  function: {self.nb_symbols_function}", p.INFO)
-		log.print(f"  define:   {self.nb_symbols_define}", p.INFO)
-		log.print(f"  typedef:  {self.nb_symbols_typedef}", p.INFO)
-		log.print(f"  enum:     {self.nb_symbols_enum}", p.INFO)
+		tmp_ansi = f"{a.ITA}{a.YEL}"
+		log.print(f"  function: {tmp_ansi}{self.nb_symbols_function}{a.RST}", p.INFO)
+		log.print(f"  define:   {tmp_ansi}{self.nb_symbols_define}{a.RST}", p.INFO)
+		log.print(f"  typedef:  {tmp_ansi}{self.nb_symbols_typedef}{a.RST}", p.INFO)
+		log.print(f"  enum:     {tmp_ansi}{self.nb_symbols_enum}{a.RST}", p.INFO)
 		log.print(f"in", p.SUCCESS)
-		log.print(f"  c file:   {self.nb_symbols_c_files}", p.INFO)
-		log.print(f"  h file:   {self.nb_symbols_h_files}", p.INFO)
+		log.print(f"  c file:   {tmp_ansi}{self.nb_symbols_c_files}{a.RST}", p.INFO)
+		log.print(f"  h file:   {tmp_ansi}{self.nb_symbols_h_files}{a.RST}", p.INFO)
 
 	def	update_headers(self) -> None:
 		for h_tree_key in self.h_files.keys():
@@ -380,4 +381,4 @@ class	Header():
 				c_title = f"{a.UND}{a.YEL}{self.get_key(c_file)}{a.RST}"
 				header_title = f"{a.RED}{self.get_key(header)}{a.RST}"
 				log.print(f"{c_title} have an unused header, {header_title}",
-																	p.FAILURE)
+																	p.WARN)
