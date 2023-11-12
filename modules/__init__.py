@@ -9,8 +9,6 @@ import inspect
 import subprocess
 import argparse
 
-import norminette
-
 from pprint import pprint
 
 # METAVAR
