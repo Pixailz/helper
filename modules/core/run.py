@@ -2,39 +2,41 @@ from modules import *
 
 class	Run():
 	def	__init__(self):
-		if not self.setup_name:
-			log.print("HELPER_SETUP_NAME variable not found", p.FAILURE)
+
+		if parsing.args["setup_name"] not in setup.config:
+			log.print(f"[{parsing.args['setup_name']}] "
+					   "not implemented yet", p.FAILURE)
 			return
 
-		if self.setup_name not in self.config:
-			log.print(f"[{self.setup_name}] not implemented yet", p.FAILURE)
-			return
-
-		log.print(f"Executing setup ({a.YEL}{self.setup_name}{a.RST})", p.INFO, 1)
+		log.print("Executing helper profile "
+				 f"({a.YEL}{parsing.args['setup_name']}{a.RST})", p.INFO, 1)
 
 		self.do_setup()
 
-		log.print(f"Successfully executed setup ({a.GRE}{self.setup_name}{a.RST})", p.SUCCESS)
+		log.print("Successfully executed helper profile "
+				 f"({a.GRE}{parsing.args['setup_name']}{a.RST})", p.SUCCESS)
 
 	def	do_setup(self) -> None:
-		for part in self.config[self.setup_name]:
-			log.print(f"{self.setup_name} Part {part}")
 
-			data = self.config[self.setup_name][part]
-			self.current_config = data["part_config"]
-			del data["part_config"]
+		for part in setup.config[parsing.args["setup_name"]]["_profile_"]:
+			log.print(f"{parsing.args['setup_name']} Part {part}")
+
+			data = setup.config[parsing.args["setup_name"]]["_profile_"][part]
+			self.current_config = data["_config_"]
 
 			for module in data:
-				log.print(f"{self.setup_name}   Module {module}")
+				if not Is.private(module):
+					log.print(f"{parsing.args['setup_name']}   Module {module}")
 
-				match module:
-					case "makefile": module_func = self.do_setup_makefile
-					case "prototype": module_func = self.do_setup_prototype
-					case "header": module_func = self.do_setup_header
-				timer = Timer()
-				module_func(data[module])
-				timer.end()
-				self.print_elapsed(module)
+					match module:
+						case "makefile": module_func = self.do_setup_makefile
+						case "prototype": module_func = self.do_setup_prototype
+						case "header": module_func = self.do_setup_header
+					timer = Timer()
+					module_func(data[module])
+					timer.end()
+					self.print_elapsed(module, timer)
+
 
 	def	do_setup_makefile(self, data: any) -> None:
 		makefile = Makefile(
@@ -44,6 +46,7 @@ class	Run():
 
 		for item in data:
 			makefile.add_var(*item)
+
 		makefile.update_makefile()
 
 	def	do_setup_prototype(self, data: any) -> None:
@@ -54,6 +57,7 @@ class	Run():
 
 		for item in data:
 			prototype.add_header(*item)
+
 		prototype.update_include()
 
 	def	do_setup_header(self, data: any) -> None:
@@ -64,7 +68,7 @@ class	Run():
 
 		header.get_unused_header()
 
-	def	print_elapsed(self, title):
+	def	print_elapsed(self, title, timer):
 		elapsed = timer.elapsed()
 		elapsed /= 1000
 		warning = False

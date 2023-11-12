@@ -1,5 +1,9 @@
 from modules import *
-from modules import __AUTHOR__, __NAME__, __VERSION__, __MODULES__
+
+from modules import __AUTHOR__
+from modules import __NAME__
+from modules import __VERSION__
+from modules import __MODULES__
 
 _IMP = a.RED
 _MOD = a.PUR
@@ -14,6 +18,7 @@ _F_META_DIR = f"{_ADJ}FOLDER{a.RST}"
 _F_META_FILE = f"{_ADJ}FILE{a.RST}"
 _F_META_LOG_FILE = f"{_ADJ}LOG_FILE{a.RST}"
 _F_META_N = f"{_ADJ}N{a.RST}"
+_F_META_STRING = f"{_ADJ}STRING{a.RST}"
 
 class	Parsing():
 	def	__init__(self):
@@ -40,7 +45,7 @@ class	Parsing():
 
 		self.parser.add_argument(
 			"--src-dir", "-s",
-			help=f"{_F_META_FILE} is the dir where helper will search for "
+			help=f"{_F_META_DIR} is the dir where helper will search for "
 				 "C code file",
 			metavar=_F_META_DIR,
 			default="src",
@@ -49,7 +54,7 @@ class	Parsing():
 
 		self.parser.add_argument(
 			"--inc-dir", "-I",
-			help=f"{_F_META_FILE} is the dir where helper will search for include header",
+			help=f"{_F_META_DIR} is the dir where helper will search for include header",
 			metavar=_F_META_DIR,
 			default="inc",
 			type=str,
@@ -64,11 +69,25 @@ class	Parsing():
 		)
 
 		self.parser.add_argument(
-			f"--{_WIP}log-file", "-L",
-			help=f"{_F_META_LOG_FILE} to output log",
+			"--setup-name", "-S",
+			help=f"{_F_META_STRING} profile to search in setup.json",
+			metavar=_F_META_STRING,
+			default="_default_",
+			type=str,
+		)
+
+		self.parser.add_argument(
+			f"--log-file", "-L",
+			help=f"{_WIP}{_F_META_LOG_FILE} to output log",
 			metavar=_F_META_LOG_FILE,
 			default=None,
 			type=str,
+		)
+
+		self.parser.add_argument(
+			f"--no-color",
+			help=f"{_WIP}disable color",
+			action="store_true"
 		)
 
 		for module in __MODULES__:
@@ -94,8 +113,8 @@ class	Parsing():
 		)
 
 		self.g_header.add_argument(
-			f"--{_WIP}header-max-rec",
-			help=f"Limit the recursion of the "
+			f"--header-max-rec",
+			help=f"{_WIP}Limit the recursion of the "
 				 f"{_MOD}Header{a.RST} module by {_F_META_N}",
 			metavar=_F_META_N,
 			default=10,
@@ -105,20 +124,5 @@ class	Parsing():
 	def	parse_args(self):
 		self.args = vars(self.parser.parse_args())
 		log.print(f"Successfully parsed sys.argv", p.SUCCESS)
-		log.print(self.args, mode=p.DEBUG)
 
-"""
-help
-version
-no-ansi
-src-dir
-inc-dir
-makefile
-
-h
-V
-N
-s
-I
-M
-"""
+parsing = Parsing()

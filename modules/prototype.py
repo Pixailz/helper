@@ -1,5 +1,7 @@
 from modules import *
 
+from modules import __CWD__
+
 class	Prototype():
 	def	__init__(self, inc_dir, src_dir):
 		self.inc_dir = os.path.join(__CWD__, inc_dir)

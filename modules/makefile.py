@@ -1,5 +1,7 @@
 from modules import *
 
+from modules import __CWD__
+
 class	Makefile():
 	def	__init__(self, makefile, src_dir):
 		self.makefile = os.path.join(__CWD__, makefile)
@@ -44,7 +46,7 @@ class	Makefile():
 				log.print(f"file found [{file_path}]", p.DEBUG, 3)
 				files.append(file_path)
 		log.print(f"[{a.GRE}{len(files)}{a.RST}] file found for"
-				  f"[{a.YEL}{var}{a.RST}]")
+				  f"[{a.YEL}{var}{a.RST}]", p.SUCCESS)
 		return (self.format_src(var, *files))
 
 	def	update_makefile(self):

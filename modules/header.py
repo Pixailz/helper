@@ -1,5 +1,7 @@
 from modules import *
 
+from modules import __CWD__
+
 BLACK_LISTED_WORD = [
 	"return",
 	"while"
@@ -163,7 +165,7 @@ class	Header():
 		self.update_data("c_files", c_file_header, c_key)
 
 	def	populate_h_files(self, h_file: str) -> None:
-		if self.is_private_header(h_file): return
+		if Is.private_header(h_file): return
 
 		header_path = self.get_path(h_file)
 		if not header_path: return
@@ -213,13 +215,13 @@ class	Header():
 			changed = 0
 			if key == "enum":
 				for sym in content[key]:
-					if not self.is_private(sym):
+					if not Is.private(sym):
 						parsed_content.append(sym)
 						parsed_content.extend(content[key][sym])
 						changed += len(content[key][sym]) + 1
 			else:
 				for sym in content[key]:
-					if not self.is_private(sym):
+					if not Is.private(sym):
 						parsed_content.append(sym)
 						changed += 1
 			tmp_name = self.stats_prefix + key
@@ -250,7 +252,7 @@ class	Header():
 		Merge foreign key according to headers in data struct,
 		then recursivly merge symbols of each layer of header
 		"""
-		if self.is_private_header(header_name): return {}
+		if Is.private_header(header_name): return {}
 
 		try:
 			self.recursion_lvl.index(header_name)

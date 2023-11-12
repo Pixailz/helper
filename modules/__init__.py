@@ -37,10 +37,6 @@ __MODULES__ = [
 	"prototype",
 	"header",
 ]
-## ANSI
-__NO_ANSI__=False
-## SETUP
-__SETUP_DEFAULT_NAME__ = "_default_"
 
 # UTILS
 from modules.utils.ansi import a
@@ -50,10 +46,12 @@ from modules.utils.check import Is
 from modules.utils.glob import get_file
 from modules.utils.exec_time import Timer, TimerMode
 
-# MAIN MODULES
-from modules.parsing import Parsing
-from modules.setup import Setup
-
+# HELPER MODULES
 from modules.prototype import Prototype
 from modules.makefile import Makefile
 from modules.header import Header
+
+# MAIN MODULES
+from modules.core.parsing import parsing
+from modules.core.setup import setup
+from modules.core.run import Run
