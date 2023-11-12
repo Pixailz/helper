@@ -11,12 +11,12 @@ BLACK_LISTED_WORD = [
 
 class	Header():
 	def	__init__(self,
-			inc_dir: str,
+			inc_dir: list[str],
 			src_dir: str,
 			excluded_files: list[str]	= [],
 			max_recursion: int			= 10,
 		):
-		self.inc_dir: str = os.path.join(__CWD__, inc_dir)
+		self.inc_dir: list[str] = inc_dir
 		self.src_dir: str = os.path.join(__CWD__, src_dir)
 		self.c_files: dict[any] = {}
 		self.h_files: dict[any] = {}
@@ -30,6 +30,29 @@ class	Header():
 		self.reset_stats()
 		self.populate_files(excluded_files)
 
+	def	get_lib_compiler(self, compiler: str) -> None:
+		io = reg.c_compiler_inc.findall(
+			subprocess.run(
+				[f"echo | {compiler} -xc -E -v -"],
+				shell=True,
+				capture_output=True,
+			).stderr.decode("utf-8")
+		)
+
+		if len(io):
+			for item in io[0].split('\n'):
+				if len(item):
+					self.lib_dir.append(item.removeprefix(" "))
+
+	def	get_lib_dir(self) -> None:
+		self.get_lib_compiler("gcc")
+		self.get_lib_compiler("clang")
+
+		for inc_dir in self.inc_dir:
+			self.lib_dir.append(os.path.join(__CWD__, inc_dir))
+
+		self.lib_dir = sorted(set(self.lib_dir), reverse=True)
+
 	def	reset_stats(self):
 		self.stats_prefix = "nb_symbols_"
 		self.nb_symbols_function = 0
@@ -42,7 +65,6 @@ class	Header():
 	def	get_path(self, key) -> str:
 		to_check = [
 			self.src_dir,
-			self.inc_dir,
 			*self.lib_dir,
 		]
 
@@ -55,7 +77,6 @@ class	Header():
 	def	get_key(self, path) -> str:
 		to_check = [
 			self.src_dir,
-			self.inc_dir,
 			*self.lib_dir,
 		]
 
@@ -116,35 +137,16 @@ class	Header():
 					primary_key: value,
 				})
 
-	def	get_lib_compiler(self, compiler: str) -> None:
-		io = reg.c_compiler_inc.findall(
-			subprocess.run(
-				["echo | clang -xc -E -v -"],
-				shell=True,
-				capture_output=True,
-			).stderr.decode("utf-8")
-		)
-		if len(io):
-			for item in io[0].split('\n'):
-				if len(item):
-					self.lib_dir.append(item.removeprefix(" "))
-
-	def	get_lib_dir(self) -> None:
-		self.get_lib_compiler("gcc")
-		self.get_lib_compiler("clang")
-		self.lib_dir = sorted(set(self.lib_dir), reverse=True)
-		return ()
-
 	def	populate_files(self, excluded_files: list[str] = []) -> None:
 		files = get_file(f"{self.src_dir}/**/*.c", excluded_files)
 		self.nb_symbols_c_files += len(files)
 		for file in files:
 			self.populate_files_c(file)
 
-		files = get_file(f"{self.inc_dir}/**/*.h", excluded_files)
+		files = get_file(f"{self.inc_dir[0]}/**/*.h", excluded_files)
 		self.nb_symbols_h_files += len(files)
 		for file in files:
-			self.populate_h_files(file)
+			self.populate_h_files(os.path.basename(file))
 
 		self.print_stats_symbols("Successfully parsed:")
 
@@ -160,6 +162,7 @@ class	Header():
 			c_file_header.update({
 				self.get_path(header): []
 			})
+			self.populate_h_files(header)
 
 		c_key = self.get_path(c_file)
 		self.update_data("c_files", c_file_header, c_key)

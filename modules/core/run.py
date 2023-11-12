@@ -51,7 +51,7 @@ class	Run():
 
 	def	do_setup_prototype(self, data: any) -> None:
 		prototype = Prototype(
-			inc_dir	= self.current_config["inc_dir"],
+			inc_dir	= self.current_config["inc_dir"][0],
 			src_dir	= self.current_config["src_dir"],
 		)
 

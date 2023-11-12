@@ -45,7 +45,7 @@ class	Makefile():
 				file_path = f"{dirpath}/{file}".removeprefix(self.src_dir + '/')
 				log.print(f"file found [{file_path}]", p.DEBUG, 3)
 				files.append(file_path)
-		log.print(f"[{a.GRE}{len(files)}{a.RST}] file found for"
+		log.print(f"[{a.GRE}{len(files)}{a.RST}] file found for "
 				  f"[{a.YEL}{var}{a.RST}]", p.SUCCESS)
 		return (self.format_src(var, *files))
 

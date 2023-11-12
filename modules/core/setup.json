@@ -2,7 +2,10 @@
     "_default_": {
         "_config_": {
             "src_dir": "src",
-            "inc_dir": "inc",
+            "inc_dir": [
+                "inc",
+                "lib/ft_libft/inc"
+            ],
             "makefile": "mk/srcs.mk"
         },
         "mandatory": {
@@ -20,7 +23,9 @@
     },
     "ft_libft": {
         "_config_": {
-            "inc_dir": "inc",
+            "inc_dir": [
+                "inc"
+            ],
             "src_dir": "src",
             "makefile": "mk/srcs.mk"
         },
@@ -60,7 +65,10 @@
     },
     "ft_ping": {
         "_config_": {
-            "inc_dir": "inc",
+            "inc_dir": [
+                "inc",
+                "lib/ft_libft/inc"
+            ],
             "makefile": "mk/srcs.mk",
             "src_dir": "src/mandatory"
         },
@@ -76,7 +84,10 @@
     },
     "SupaBlank": {
         "_config_": {
-            "inc_dir": "inc",
+            "inc_dir": [
+                "inc",
+                "lib/ft_libft/inc"
+            ],
             "makefile": "mk/srcs.mk"
         },
         "mandatory": {
