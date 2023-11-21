@@ -69,15 +69,29 @@
                 "inc",
                 "lib/ft_libft/inc"
             ],
-            "makefile": "mk/srcs.mk",
-            "src_dir": "src/mandatory"
+            "makefile": "mk/srcs.mk"
         },
         "mandatory": {
+            "_config_": {
+                "src_dir": "src/mandatory"
+            },
             "makefile": [
                 ["SRC_C_MANDATORY"]
             ],
             "prototype": [
                 ["ft_ping.h"]
+            ],
+            "header": []
+        },
+        "bonus": {
+            "_config_": {
+                "src_dir": "src/bonus"
+            },
+            "makefile": [
+                ["SRC_C_BONUS"]
+            ],
+            "prototype": [
+                ["ft_ping_bonus.h"]
             ],
             "header": []
         }
