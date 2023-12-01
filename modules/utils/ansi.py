@@ -6,7 +6,7 @@ class	a():
 	ESC		= "\x1b"
 
 	# COLOR
-	BLA	= f"{ESC}[30"
+	BLA	= f"{ESC}[30m"
 	RED	= f"{ESC}[31m"
 	GRE	= f"{ESC}[32m"
 	YEL	= f"{ESC}[33m"

@@ -1,5 +1,14 @@
 from modules import *
 
+__LOGO__ = f"""\
+.------..------..------..------..------..------.
+|{a.CYA}H{a.RST}.--. ||{a.CYA}E{a.RST}.--. ||{a.CYA}L{a.RST}.--. ||{a.CYA}P{a.RST}.--. ||{a.CYA}E{a.RST}.--. ||{a.CYA}R{a.RST}.--. |
+| :{a.BLA}/\{a.RST}: || {a.RED}(\/){a.RST} || :{a.BLA}/\{a.RST}: || :{a.RED}/\{a.RST}: || {a.RED}(\/){a.RST} || :{a.BLA}(){a.RST}: |
+| {a.BLA}(__){a.RST} || :{a.RED}\/{a.RST}: || {a.BLA}(__){a.RST} || :{a.RED}\/{a.RST}: || :{a.RED}\/{a.RST}: || {a.BLA}()(){a.RST} |
+| '--'{a.RED}H{a.RST}|| '--'{a.RED}E{a.RST}|| '--'{a.RED}L{a.RST}|| '--'{a.RED}P{a.RST}|| '--'{a.RED}E{a.RST}|| '--'{a.RED}R{a.RST}|
+`------'`------'`------'`------'`------'`------'\
+"""
+
 class	Run():
 	def	__init__(self):
 
@@ -7,6 +16,8 @@ class	Run():
 			log.print(f"[{parsing.args['setup_name']}] "
 					   "not implemented yet", p.FAILURE)
 			return
+
+		self.print_logo()
 
 		log.print("Executing helper profile "
 				 f"({a.YEL}{parsing.args['setup_name']}{a.RST})", p.INFO, 1)
@@ -18,6 +29,9 @@ class	Run():
 		log.print("Successfully executed helper profile"
 				 f", {a.GRE}{parsing.args['setup_name']}{a.RST}, in "
 				 f"{a.GRE}{timer.elapsed()}{a.RST} ms", p.SUCCESS)
+
+	def print_logo(self):
+		print(__LOGO__)
 
 	def	do_setup(self) -> None:
 
