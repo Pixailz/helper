@@ -128,5 +128,26 @@
             ],
             "header": []
         }
+    },
+    "GameOfLife": {
+        "_config_": {
+            "inc_dir": [
+                "inc",
+                "lib/ft_libft/inc"
+            ],
+            "makefile": "mk/srcs.mk"
+        },
+        "mandatory": {
+            "_config_": {
+                "src_dir": "src/"
+            },
+            "makefile": [
+                ["SRC_C"]
+            ],
+            "prototype": [
+                ["game_of_life.h"]
+            ],
+            "header": []
+        }
     }
 }
