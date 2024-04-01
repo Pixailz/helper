@@ -49,7 +49,8 @@ jobs:
         run: |+
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git commit -a -m "[helper] submodule update spread"
+          git add . || true
+          git commit -m "[helper] submodule update spread" || true
           git status && git push || true
 
   test-ft_ping:
@@ -70,18 +71,13 @@ jobs:
       - name: 🔧 test ft_ping
         run: make
 
-      - name: ☁️ Configure and commit
+      - name: ☁️ Configure, commit and push
         run: |+
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git commit -a -m "[helper] submodule update spread"
-
-      - name: 💬 Git status
-        run: |+
-          git status
-
-      - name: ☁️ ft_ping push
-        run: git status && git push || true
+          git add . || true
+          git commit -m "[helper] submodule update spread" || true
+          git status && git push || true
 
   test-SupaBlank:
     needs: update-ft_libft
@@ -101,15 +97,10 @@ jobs:
       - name: 🔧 test SupaBlank
         run: make
 
-      - name: ☁️ Configure and commit
+      - name: ☁️ Configure, commit and push
         run: |+
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git commit -a -m "[helper] submodule update spread"
-
-      - name: 💬 Git status
-        run: |+
-          git status
-
-      - name: ☁️ SupaBlank push
-        run: git status && git push || true
+          git add . || true
+          git commit -m "[helper] submodule update spread" || true
+          git status && git push || true
