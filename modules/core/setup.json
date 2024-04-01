@@ -73,27 +73,16 @@
         },
         "mandatory": {
             "_config_": {
-                "src_dir": "src/mandatory"
+                "src_dir": "src"
             },
             "makefile": [
-                ["SRC_C_MANDATORY"]
+                ["SRC_C"]
             ],
             "prototype": [
                 ["ft_ping.h"]
             ],
             "header": []
-        },
-        "bonus": {
-            "_config_": {
-                "src_dir": "src/bonus"
-            },
-            "makefile": [
-                ["SRC_C_BONUS"]
-            ],
-            "prototype": [
-                ["ft_ping_bonus.h"]
-            ],
-            "header": []
+        },"header": []
         }
     },
     "SupaBlank": {
