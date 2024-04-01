@@ -382,6 +382,9 @@ class	Header():
 			and w not in reg.proto.findall(c_file_str)
 		]
 		for header in self.c_files[c_file]:
+			if not header:
+				log.print(f"Wrong header in {c_file}", p.FAILURE)
+				continue
 			sym = self.h_files[header]
 			for word in c_file_word:
 				if word in sym:
