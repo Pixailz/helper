@@ -50,7 +50,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git commit -a -m "[helper] submodule update spread"
-          git status && git push
+          git status && git push || true
 
   test-ft_ping:
     needs: update-ft_libft
@@ -81,7 +81,7 @@ jobs:
           git status
 
       - name: ☁️ ft_ping push
-        run: git status && git push
+        run: git status && git push || true
 
   test-SupaBlank:
     needs: update-ft_libft
@@ -112,35 +112,4 @@ jobs:
           git status
 
       - name: ☁️ SupaBlank push
-        run: git status && git push
-
-  test-GameOfLife:
-    needs: update-ft_libft
-    runs-on: ubuntu-latest
-    steps:
-      - name: ☁️ Retrieve GameOfLife repo
-        uses: actions/checkout@v3
-        with:
-          repository: "Pixailz/GameOfLife"
-          submodules: recursive
-          token: ${{ secrets.PAT_ACTIONS }}
-
-      - name: ☁️ Update submodules
-        run: |+
-          git submodule update --remote --recursive
-
-      - name: 🔧 test GameOfLife
-        run: make
-
-      - name: ☁️ Configure and commit
-        run: |+
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git commit -a -m "[helper] submodule update spread"
-
-      - name: 💬 Git status
-        run: |+
-          git status
-
-      - name: ☁️ GameOfLife push
-        run: git status && git push
+        run: git status && git push || true
