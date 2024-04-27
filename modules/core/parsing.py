@@ -90,7 +90,8 @@ class	Parsing():
 			action="store_true"
 		)
 
-		for module in __MODULES__:
+		# for module in __MODULES__:
+		for module in ["makefile", "prototype", "header"]:
 			getattr(self, "add_args_" + module)()
 
 	def	add_args_prototype(self):

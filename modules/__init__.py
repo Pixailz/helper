@@ -35,7 +35,7 @@ __DEBUG__ = 0
 __MODULES__ = [
 	"makefile",
 	"prototype",
-	"header",
+	# "header",
 ]
 
 # UTILS
