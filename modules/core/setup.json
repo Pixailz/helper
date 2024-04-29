@@ -43,7 +43,8 @@
                 ["SRC_RDM", "random"],
                 ["SRC_LNX", "linux"],
                 ["SRC_NET_IPV4", "network/ipv4"],
-                ["SRC_UNI_TEST", "unit_test"]
+                ["SRC_UNI_TEST", "unit_test"],
+                ["SRC_HASHTABLE", "hashtable"]
             ],
             "prototype": [
                 ["libft_integer.h", "integer"],
@@ -58,7 +59,8 @@
                 ["libft_random.h", "random"],
                 ["libft_linux.h", "linux"],
                 ["libft_network/ipv4.h", "network/ipv4"],
-                ["libft_unit_test.h", "unit_test"]
+                ["libft_unit_test.h", "unit_test"],
+				["libft_hashtable.h", "hashtable"]
             ],
             "header": []
         }
