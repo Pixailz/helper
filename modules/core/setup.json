@@ -65,27 +65,6 @@
             "header": []
         }
     },
-    "ft_ping": {
-        "_config_": {
-            "inc_dir": [
-                "inc",
-                "lib/ft_libft/inc"
-            ],
-            "makefile": "mk/srcs.mk"
-        },
-        "mandatory": {
-            "_config_": {
-                "src_dir": "src"
-            },
-            "makefile": [
-                ["SRC_C"]
-            ],
-            "prototype": [
-                ["ft_ping.h"]
-            ],
-            "header": []
-        }
-    },
     "SupaBlank": {
         "_config_": {
             "inc_dir": [
@@ -119,7 +98,7 @@
             "header": []
         }
     },
-    "GameOfLife": {
+    "ft_ping": {
         "_config_": {
             "inc_dir": [
                 "inc",
@@ -129,13 +108,46 @@
         },
         "mandatory": {
             "_config_": {
-                "src_dir": "src/"
+                "src_dir": "src"
             },
             "makefile": [
                 ["SRC_C"]
             ],
             "prototype": [
-                ["game_of_life.h"]
+                ["ft_ping.h"]
+            ],
+            "header": []
+        }
+    },
+    "ft_traceroute": {
+        "_config_": {
+            "inc_dir": [
+                "inc",
+                "lib/ft_libft/inc"
+            ],
+            "makefile": "mk/srcs.mk"
+        },
+        "mandatory": {
+            "_config_": {
+                "src_dir": "src/mandatory"
+            },
+            "makefile": [
+                ["SRC_C_MANDATORY"]
+            ],
+            "prototype": [
+                ["ft_traceroute.h"]
+            ],
+            "header": []
+        },
+        "bonus": {
+            "_config_": {
+                "src_dir": "src/bonus"
+            },
+            "makefile": [
+                ["SRC_C_BONUS"]
+            ],
+            "prototype": [
+                ["ft_traceroute_bonus.h"]
             ],
             "header": []
         }
