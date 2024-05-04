@@ -65,10 +65,10 @@ jobs:
         ]
     runs-on: ubuntu-latest
     steps:
-      - name: ☁️ Retrieve ${{ matrix.test_src }} repo
+      - name: ☁️ Retrieve ${{ matrix.repo }} repo
         uses: actions/checkout@v3
         with:
-          repository: ${{ matrix.test_src }}
+          repository: ${{ matrix.repo }}
           submodules: recursive
           token: ${{ secrets.PAT_ACTIONS }}
 
@@ -76,7 +76,7 @@ jobs:
         run: |+
           git submodule update --remote --recursive
 
-      - name: 🔧 test ${{ matrix.test_src }}
+      - name: 🔧 test ${{ matrix.repo }}
         run: make
 
       - name: ☁️ Configure, commit and push
