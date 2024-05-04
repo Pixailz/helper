@@ -3,8 +3,8 @@ from modules import *
 __LOGO__ = f"""\
 .------..------..------..------..------..------.
 |{a.CYA}H{a.RST}.--. ||{a.CYA}E{a.RST}.--. ||{a.CYA}L{a.RST}.--. ||{a.CYA}P{a.RST}.--. ||{a.CYA}E{a.RST}.--. ||{a.CYA}R{a.RST}.--. |
-| :{a.BLA}/\{a.RST}: || {a.RED}(\/){a.RST} || :{a.BLA}/\{a.RST}: || :{a.RED}/\{a.RST}: || {a.RED}(\/){a.RST} || :{a.BLA}(){a.RST}: |
-| {a.BLA}(__){a.RST} || :{a.RED}\/{a.RST}: || {a.BLA}(__){a.RST} || :{a.RED}\/{a.RST}: || :{a.RED}\/{a.RST}: || {a.BLA}()(){a.RST} |
+| :{a.BLA}/\\{a.RST}: || {a.RED}(\\/){a.RST} || :{a.BLA}/\\{a.RST}: || :{a.RED}/\\{a.RST}: || {a.RED}(\\/){a.RST} || :{a.BLA}(){a.RST}: |
+| {a.BLA}(__){a.RST} || :{a.RED}\\/{a.RST}: || {a.BLA}(__){a.RST} || :{a.RED}\\/{a.RST}: || :{a.RED}\\/{a.RST}: || {a.BLA}()(){a.RST} |
 | '--'{a.RED}H{a.RST}|| '--'{a.RED}E{a.RST}|| '--'{a.RED}L{a.RST}|| '--'{a.RED}P{a.RST}|| '--'{a.RED}E{a.RST}|| '--'{a.RED}R{a.RST}|
 `------'`------'`------'`------'`------'`------'\
 """
