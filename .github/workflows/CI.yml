@@ -53,14 +53,22 @@ jobs:
           git commit -m "[helper] submodule update spread" || true
           git status && git push || true
 
-  test-ft_ping:
+  update_other:
     needs: update-ft_libft
+    strategy:
+      max-parallel: 5
+      matrix:
+        repo: [
+          "Pixailz/SupaBlank",
+          "Pixailz/ft_ping",
+          "Pixailz/ft_traceroute"
+        ]
     runs-on: ubuntu-latest
     steps:
-      - name: ☁️ Retrieve ft_ping
+      - name: ☁️ Retrieve ${{ matrix.test_src }} repo
         uses: actions/checkout@v3
         with:
-          repository: "Pixailz/ft_ping"
+          repository: ${{ matrix.test_src }}
           submodules: recursive
           token: ${{ secrets.PAT_ACTIONS }}
 
@@ -68,33 +76,7 @@ jobs:
         run: |+
           git submodule update --remote --recursive
 
-      - name: 🔧 test ft_ping
-        run: make
-
-      - name: ☁️ Configure, commit and push
-        run: |+
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add . || true
-          git commit -m "[helper] submodule update spread" || true
-          git status && git push || true
-
-  test-SupaBlank:
-    needs: update-ft_libft
-    runs-on: ubuntu-latest
-    steps:
-      - name: ☁️ Retrieve SupaBlank repo
-        uses: actions/checkout@v3
-        with:
-          repository: "Pixailz/SupaBlank"
-          submodules: recursive
-          token: ${{ secrets.PAT_ACTIONS }}
-
-      - name: ☁️ Update submodules
-        run: |+
-          git submodule update --remote --recursive
-
-      - name: 🔧 test SupaBlank
+      - name: 🔧 test ${{ matrix.test_src }}
         run: make
 
       - name: ☁️ Configure, commit and push
