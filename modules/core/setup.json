@@ -43,7 +43,7 @@
                 ["SRC_RDM", "random"],
                 ["SRC_LNX", "linux"],
                 ["SRC_NET_IPV4", "network/ipv4"],
-                ["SRC_NET_PACKET", "network/packet"],
+                ["SRC_NET_PACK", "network/packet"],
                 ["SRC_UNI_TEST", "unit_test"],
                 ["SRC_HASHTABLE", "hashtable"]
             ],
