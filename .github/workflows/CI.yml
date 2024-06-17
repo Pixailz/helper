@@ -61,7 +61,8 @@ jobs:
         repo: [
           "Pixailz/SupaBlank",
           "Pixailz/ft_ping",
-          "Pixailz/ft_traceroute"
+          "Pixailz/ft_traceroute",
+          "Pixailz/ft_lemipc"
         ]
     runs-on: ubuntu-latest
     steps:

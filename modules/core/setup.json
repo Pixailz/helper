@@ -131,25 +131,34 @@
         },
         "mandatory": {
             "_config_": {
-                "src_dir": "src/mandatory"
+                "src_dir": "src"
             },
             "makefile": [
-                ["SRC_C_MANDATORY"]
+                ["SRC_C"]
             ],
             "prototype": [
                 ["ft_traceroute.h"]
             ],
             "header": []
+        }
+    },
+    "ft_lem_ipc": {
+        "_config_": {
+            "inc_dir": [
+                "inc",
+                "lib/ft_libft/inc"
+            ],
+            "makefile": "mk/srcs.mk"
         },
-        "bonus": {
+        "mandatory": {
             "_config_": {
-                "src_dir": "src/bonus"
+                "src_dir": "src"
             },
             "makefile": [
-                ["SRC_C_BONUS"]
+                ["SRC_C"]
             ],
             "prototype": [
-                ["ft_traceroute_bonus.h"]
+                ["lem_ipc.h"]
             ],
             "header": []
         }
