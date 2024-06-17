@@ -28,62 +28,7 @@ jobs:
       is_called: true
 
   update-ft_libft:
-    needs: test-ft_libft
-    runs-on: ubuntu-latest
-    steps:
-      - name: ☁️ Retrieve ft_libft repo
-        uses: actions/checkout@v3
-        with:
-          repository: "Pixailz/ft_libft"
-          submodules: recursive
-          token: ${{ secrets.PAT_ACTIONS }}
+    uses: Pixailz/ft_libft/.github/workflows/CD-update.yml@main
 
-      - name: ☁️ Update submodules
-        run: |+
-          git submodule update --remote --recursive
-
-      - name: 🔧 Update file with helper
-        run: make helper
-
-      - name: ☁️ Configure, commit and push
-        run: |+
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add . || true
-          git commit -m "[helper] submodule update spread" || true
-          git status && git push || true
-
-  update_other:
-    needs: update-ft_libft
-    strategy:
-      max-parallel: 5
-      matrix:
-        repo: [
-          "Pixailz/SupaBlank",
-          "Pixailz/ft_ping",
-          "Pixailz/ft_traceroute",
-          "Pixailz/ft_lemipc"
-        ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: ☁️ Retrieve ${{ matrix.repo }} repo
-        uses: actions/checkout@v3
-        with:
-          repository: ${{ matrix.repo }}
-          submodules: recursive
-          token: ${{ secrets.PAT_ACTIONS }}
-
-      - name: ☁️ Update submodules
-        run: |+
-          git submodule update --remote --recursive
-
-      - name: 🔧 test ${{ matrix.repo }}
-        run: make
-
-      - name: ☁️ Configure, commit and push
-        run: |+
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add . || true
-          git commit -m "[helper] submodule update spread" || true
-          git status && git push || true
+  other-ft_libft:
+    uses: Pixailz/ft_libft/.github/workflows/CD-other.yml@main
