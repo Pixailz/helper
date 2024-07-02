@@ -28,7 +28,11 @@ jobs:
       is_called: true
 
   update-ft_libft:
+    needs: test-ft_libft
     uses: Pixailz/ft_libft/.github/workflows/CD-update.yml@main
+    secrets: inherit
 
   other-ft_libft:
+    needs: update-ft_libft
     uses: Pixailz/ft_libft/.github/workflows/CD-other.yml@main
+    secrets: inherit
