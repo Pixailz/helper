@@ -162,5 +162,26 @@
             ],
             "header": []
         }
+    },
+    "ft_nm": {
+        "_config_": {
+            "inc_dir": [
+                "inc",
+                "lib/ft_libft/inc"
+            ],
+            "makefile": "mk/srcs.mk"
+        },
+        "mandatory": {
+            "_config_": {
+                "src_dir": "src"
+            },
+            "makefile": [
+                ["SRC_C"]
+            ],
+            "prototype": [
+                ["ft_nm.h"]
+            ],
+            "header": []
+        }
     }
 }
