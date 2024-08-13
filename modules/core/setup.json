@@ -44,6 +44,7 @@
                 ["SRC_LNX", "linux"],
                 ["SRC_NET_IPV4", "network/ipv4"],
                 ["SRC_NET_PACK", "network/packet"],
+                ["SRC_NET_SOCK", "network/socket"],
                 ["SRC_UNI_TEST", "unit_test"],
                 ["SRC_HASHTABLE", "hashtable"]
             ],
@@ -61,6 +62,7 @@
                 ["libft_linux.h", "linux"],
                 ["libft_network/ipv4.h", "network/ipv4"],
                 ["libft_network/packet.h", "network/packet"],
+                ["libft_network/socket.h", "network/socket"],
                 ["libft_unit_test.h", "unit_test"],
 				["libft_hashtable.h", "hashtable"]
             ],
