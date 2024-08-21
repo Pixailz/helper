@@ -59,7 +59,9 @@ class	Prototype():
 			for proto in function:
 				if self.max_len < len(proto[0]):
 					self.max_len = len(proto[0])
-		self.max_len = int(self.max_len / 4) + (self.max_len % 4 != 0) + 1
+		tmp_max = self.max_len / 4
+		self.max_len = math.ceil(tmp_max) + (tmp_max.is_integer())
+		# self.max_len = int(self.max_len / 4) + (self.max_len % 4 != 0)
 
 	def	get_proto(self):
 		self.to_replace = {}
@@ -75,7 +77,7 @@ class	Prototype():
 		to_replace = []
 		for file_path, function in self.to_replace.items():
 			comment = file_path.removeprefix(self.src_dir + '/')
-			to_replace.append(f"// {comment}\n")
+			to_replace.append(f"// {comment}\n\n")
 			for proto in function:
 				tab = '\t' * (self.max_len - int(len(proto[0]) / 4))
 				new_line = f"{proto[0]}{tab}{proto[1]}"
