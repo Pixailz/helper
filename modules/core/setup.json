@@ -46,7 +46,8 @@
                 ["SRC_NET_PACK", "network/packet"],
                 ["SRC_NET_SOCK", "network/socket"],
                 ["SRC_UNI_TEST", "unit_test"],
-                ["SRC_HASHTABLE", "hashtable"]
+                ["SRC_HASHTABLE", "hashtable"],
+                ["SRC_SORT", "sort"]
             ],
             "prototype": [
                 ["libft_integer.h", "integer"],
@@ -64,7 +65,8 @@
                 ["libft_network/packet.h", "network/packet"],
                 ["libft_network/socket.h", "network/socket"],
                 ["libft_unit_test.h", "unit_test"],
-				["libft_hashtable.h", "hashtable"]
+				["libft_hashtable.h", "hashtable"],
+				["libft_sort.h", "sort"]
             ],
             "header": []
         }
