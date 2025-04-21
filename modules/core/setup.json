@@ -47,7 +47,8 @@
                 ["SRC_NET_SOCK", "network/socket"],
                 ["SRC_UNI_TEST", "unit_test"],
                 ["SRC_HASHTABLE", "hashtable"],
-                ["SRC_SORT", "sort"]
+                ["SRC_SORT", "sort"],
+				["SRC_BIN_ELF", "binary/elf"]
             ],
             "prototype": [
                 ["libft_integer.h", "integer"],
@@ -66,7 +67,8 @@
                 ["libft_network/socket.h", "network/socket"],
                 ["libft_unit_test.h", "unit_test"],
 				["libft_hashtable.h", "hashtable"],
-				["libft_sort.h", "sort"]
+				["libft_sort.h", "sort"],
+				["libft_binary/elf.h", "binary/elf"]
             ],
             "header": []
         }
@@ -183,7 +185,7 @@
                 ["SRC_C"]
             ],
             "prototype": [
-                ["ft_nm.h"]
+                ["libft_binary/elf.h"]
             ],
             "header": []
         }
