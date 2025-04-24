@@ -185,7 +185,28 @@
                 ["SRC_C"]
             ],
             "prototype": [
-                ["libft_binary/elf.h"]
+                ["ft_nm.h"]
+            ],
+            "header": []
+        }
+    },
+    "ft_woody_woodpacker": {
+        "_config_": {
+            "inc_dir": [
+                "inc",
+                "lib/ft_libft/inc"
+            ],
+            "makefile": "mk/srcs.mk"
+        },
+        "mandatory": {
+            "_config_": {
+                "src_dir": "src"
+            },
+            "makefile": [
+                ["SRC_C"]
+            ],
+            "prototype": [
+                ["ft_woody_woodpacker.h"]
             ],
             "header": []
         }
